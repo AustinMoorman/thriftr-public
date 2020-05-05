@@ -1,6 +1,6 @@
 import React from 'react';
 import './refine.css';
-import RefineMap from './refineMap1'
+import RefineMap from './refineMap'
 
 class Refine extends React.Component {
   constructor(props) {

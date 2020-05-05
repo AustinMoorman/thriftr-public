@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const User = require('../models/users');
 const Offer = require('../models/offer');
 const MerchantBio = require('../models/merchantBio');
+const Merchant = require('../models/merchant');
 
 const request = require('request');
 
@@ -141,6 +142,20 @@ searchRouter.get('/get-offers', (req, res, next) => {
         }
         return total
     }
+})
+
+searchRouter.post('/add-view', (req,res,next) => {
+    User.updateOne({_id: req.user.id },{$push: {pastViews: {offerId: req.body.offerId}}}, err => {
+        if(err){
+            next(err)
+        }
+    })
+    Merchant.updateOne({_id: req.body.merchantId},{$push: {views: {id: req.body.offerId}}}, err => {
+        if(err){
+            next(err)
+        }
+    })
+    res.send()
 })
 
 module.exports = searchRouter;

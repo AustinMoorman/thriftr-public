@@ -12,6 +12,7 @@ class OffersList extends React.Component {
       offerList: null
     }
     this.getOffers = this.getOffers.bind(this);
+    this.renderOffers = this.renderOffers.bind(this);
   }
 
   getOffers() {
@@ -24,15 +25,22 @@ class OffersList extends React.Component {
       return res.json()
     })
     .then(data => {
+      console.log(data.offerList)
       this.setState({offerList: data.offerList})
     })
+  }
+
+  renderOffers(){
+    if(this.state.offerList){
+      return <Offers offerList={this.state.offerList}/>
+    }
   }
 
   render() {
     return (
       <div>
         <Refine onBack={this.props.onBack} setLocation={this.props.setLocation} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams}/>
-        <Offers />
+        {this.renderOffers()}
         <button onClick={this.getOffers}>get offers</button>
       </div>
       

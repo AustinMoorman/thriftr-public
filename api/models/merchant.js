@@ -17,7 +17,7 @@ const merchantSchema = mongoose.Schema({
           required: true
         }
     },
-    bioViews: [String],
+    views: [{id:{type: String}, timeStamp:{type: Number, default: Date.now}}],
     images: [String]
 })
 
