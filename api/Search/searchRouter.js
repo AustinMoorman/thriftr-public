@@ -4,6 +4,7 @@ const searchRouter = express.Router()
 const mongoose = require('mongoose');
 const User = require('../models/users');
 const Offer = require('../models/offer');
+const MerchantBio = require('../models/merchantBio');
 
 const request = require('request');
 
@@ -63,7 +64,7 @@ searchRouter.get('/get-offers', (req, res, next) => {
     console.log(category)
  */
     if (latitude && longitude && radius && category) {
-        User.findOne({ _id: req.user.id }, function(err, response){
+        User.findOne({ _id: req.user.id }, (err, response) => {
             if (err) {
                 return next(err)
             }
@@ -77,55 +78,72 @@ searchRouter.get('/get-offers', (req, res, next) => {
                     return offer.offerId
                 })
             }
-            
+
             favoritedTags = response.favoritedTags
             favoritedMerchant = response.favoritedMerchant
-        })
-            .then(function() {
+        }).then(function() {
                 Offer.find({ category: category, endDate: { $gte: date }, startDate: { $lte: date }, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
                     if (err) {
                         return next(err)
                     }
                     if (!response) {
-                        return res.sendStatus(404)
+                        return;
                     }
                     offerList = response
                     offerList = offerList.filter(offer => {
                         return !recentPastviews.includes(offer._id)
                     })
-                    console.log(offerList)
+                    offerList.forEach((offer, index) => {
+                        offerList[index].score = score(offer, favoritedTags, favoritedMerchant)
+                    })
+                    offerList.sort((a, b) => {
+                        return b.score - a.score
+                    })
                 })
             }).then(function() {
-                console.log(offerList)
-                offerList.forEach(offer => {
-                    offer.score == score(offer, favoritedTags, favoritedMerchant)
-                })
-                offerList.sort((a, b) => {
-                    return a.score - b.score
+                MerchantBio.find({ category: category, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
+                    if (err) {
+                        return next(err)
+                    }
+                    if (!response) {
+                        return;
+                    }
+                    bioList = response
+                    bioList = bioList.filter(bio => {
+                        return !recentPastviews.includes(bio._id)
+                    })
+                    bioList.forEach((bio, index) => {
+                        bioList[index].score = score(bio, favoritedTags, favoritedMerchant)
+                    })
+                    bioList.sort((a, b) => {
+                        return b.score - a.score
+                    })
                 })
             })
-        res.sendStatus(200)
-    } else {
-        res.sendStatus(404)
     }
-})
 
-const score = (off, favTags, favMerchant) => {
-    const tags = off.tags
+    const score = (off, favTags, favMerchant) => {
+        const tags = off.tags
 
-    let total = favTags.forEach(map => {
-        if (tags == merch.merchant) {
-            return merch.occurance
-        } else {
-            return 0
+        let total = favTags.map(userTag => {
+            let val = 0;
+            tags.forEach(offerTag => {
+                if (userTag.tag == offerTag) {
+                    val = userTag.occurance
+                }
+            })
+            return val
+        }) || [0]
+        total = total.reduce((accumulator, currentValue) => accumulator + currentValue)
+        if (favMerchant.includes(off.merchantId)) {
+            total = total * 1.5
         }
-    })
-    total = total.reduce((accumulator, currentValue) => accumulator + currentValue)
-    if (favMerchant.includes(offer.merchantId)) {
-        total = total * 1.5
+
+        return total
     }
-    //console.log(total)
-    return total
-}
+    res.sendStatus(200);
+    console.log(offerList)
+    console.log(bioList)
+})
 
 module.exports = searchRouter;
