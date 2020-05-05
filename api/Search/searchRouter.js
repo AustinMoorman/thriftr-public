@@ -81,26 +81,25 @@ searchRouter.get('/get-offers', (req, res, next) => {
 
             favoritedTags = response.favoritedTags
             favoritedMerchant = response.favoritedMerchant
-        }).then(function() {
-                Offer.find({ category: category, endDate: { $gte: date }, startDate: { $lte: date }, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
-                    if (err) {
-                        return next(err)
-                    }
-                    if (!response) {
-                        return;
-                    }
-                    offerList = response
-                    offerList = offerList.filter(offer => {
-                        return !recentPastviews.includes(offer._id)
-                    })
-                    offerList.forEach((offer, index) => {
-                        offerList[index].score = score(offer, favoritedTags, favoritedMerchant)
-                    })
-                    offerList.sort((a, b) => {
-                        return b.score - a.score
-                    })
+        }).then(function () {
+            Offer.find({ category: category, endDate: { $gte: date }, startDate: { $lte: date }, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
+                if (err) {
+                    return next(err)
+                }
+                if (!response) {
+                    return;
+                }
+                offerList = response
+                offerList = offerList.filter(offer => {
+                    return !recentPastviews.includes(offer._id)
                 })
-            }).then(function() {
+                offerList.forEach((offer, index) => {
+                    offerList[index].score = score(offer, favoritedTags, favoritedMerchant)
+                })
+                offerList.sort((a, b) => {
+                    return b.score - a.score
+                })
+            }).then(function () {
                 MerchantBio.find({ category: category, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
                     if (err) {
                         return next(err)
@@ -118,8 +117,10 @@ searchRouter.get('/get-offers', (req, res, next) => {
                     bioList.sort((a, b) => {
                         return b.score - a.score
                     })
+                    res.json({offerList: offerList.concat(bioList)})
                 })
             })
+        })
     }
 
     const score = (off, favTags, favMerchant) => {
@@ -138,12 +139,8 @@ searchRouter.get('/get-offers', (req, res, next) => {
         if (favMerchant.includes(off.merchantId)) {
             total = total * 1.5
         }
-
         return total
     }
-    res.sendStatus(200);
-    console.log(offerList)
-    console.log(bioList)
 })
 
 module.exports = searchRouter;

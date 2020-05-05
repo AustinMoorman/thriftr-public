@@ -8,7 +8,8 @@ class OffersList extends React.Component {
     super(props)
     this.state = {
       currentLocation: null,
-      radius: null
+      radius: null,
+      offerList: null
     }
     this.getOffers = this.getOffers.bind(this);
   }
@@ -16,6 +17,15 @@ class OffersList extends React.Component {
   getOffers() {
     fetch(`http://localhost:3005/api/login/search/get-offers?longitude=${this.props.currentLocation.longitude}&latitude=${this.props.currentLocation.latitude}&radius=${this.props.radius}&category=${this.props.category}`,
     { method: 'GET', mode: 'cors', credentials: 'include' })
+    .then(res => {
+      if(res.status !== 200){
+        this.setState({error: 'there was an error'})
+      }
+      return res.json()
+    })
+    .then(data => {
+      this.setState({offerList: data.offerList})
+    })
   }
 
   render() {
