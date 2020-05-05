@@ -1,0 +1,271 @@
+import React from 'react';
+import ImageSlider from '../../imageSlider/imageSlider';
+import PictureUpload from '../pictureUpload/pictureUpload';
+import AddTags from '../addTags/addTags';
+
+const DatePicker = require('react-datepicker');
+
+class CreateOffer extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            selected: false,
+            errorMessage: '',
+            backText: 'back',
+            backMessage: '',
+            dateVal: '',
+            startDate: '',
+            endDate: '',
+            publishVal: '',
+            offer: {
+                name: '',
+                formattedAddress: '',
+                details: '',
+                deal: '',
+                images: [],
+                location: {},
+                tags: [''],
+                merchantId: '',
+                startDate: '',
+                endDate: ''
+            }
+        }
+        this.handleClick = this.handleClick.bind(this);
+        this.onBack = this.onBack.bind(this);
+        this.handlePublish = this.handlePublish.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.getSelected = this.getSelected.bind(this);
+        this.handleBack = this.handleBack.bind(this);
+        this.updateTags = this.updateTags.bind(this);
+        this.handleTime = this.handleTime.bind(this);
+        this.enableDate = this.enableDate.bind(this);
+        this.getBio = this.getBio.bind(this);
+        this.addCategory = this.addCategory.bind(this);
+        this.categoryCheck = this.categoryCheck.bind(this);
+    }
+
+    handleClick(event) {
+        this.setState({ selected: event.target.name })
+
+    }
+    onBack() {
+        this.setState({ selected: false })
+    }
+
+    handlePublish() {
+        if (this.valiDate() && this.state.offer.images && this.state.offer.deal && this.state.offer.details) {
+            fetch('http://localhost:3005/api/login/merchant/add-offer',
+                { method: 'POST', mode: 'cors', body: JSON.stringify({ offer: this.state.offer }), headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
+                .then(res => {
+                    if (res.status != 200) {
+                        return this.setState({ publishVal: 'there was an issue publishing your offer' })
+                    }
+                    this.props.onBack()
+                })
+        } else {
+            this.setState({ publishVal: 'please complete this offer before publishing' })
+        }
+
+    }
+
+    handleChange(event) {
+        const mode = event.target.name
+        let offer = this.state.offer
+        offer[mode] = event.target.value
+        this.setState({ offer: offer })
+    }
+
+    getSelected(selection) {
+        let offer = this.state.offer
+        offer.images = selection
+        this.setState({ offer: offer })
+    }
+    handleBack() {
+        if (this.state.backText == 'back') {
+            this.setState({ backText: 'yes', backMessage: 'are you sure you want to go back without publishing?' })
+        } else {
+            this.props.onBack()
+        }
+
+    }
+    updateTags(stateTags) {
+        let offer = this.state.offer;
+        offer.tags = stateTags
+        this.setState({ offer: offer })
+    }
+
+    handleTime(event) {
+        const date = Date.parse(event.target.value)
+        let offer = this.state.offer;
+        offer[event.target.name] = date
+        this.setState({ offer: offer })
+    }
+
+    valiDate() {
+
+        const startDate = this.state.offer.startDate || Date.now()
+        const now = Date.now()
+        const endDate = this.state.offer.endDate || 253402300000000
+        console.log(`${startDate} ---- ${endDate} ----- ${now}`)
+
+        if (startDate > endDate) {
+            this.setState({ dateVal: "please provide a valid date range" })
+            return false
+        } else if (endDate < now) {
+            this.setState({ dateVal: "your end date can't be in the past" })
+            return false
+        } else {
+            let offer = this.state.offer
+            offer.startDate = startDate
+            offer.endDate = endDate
+            this.setState({ offer: offer })
+            return true
+        }
+    }
+
+    enableDate(event) {
+        const mode = event.target.name;
+        if (this.state[mode]) {
+            let offer = this.state.offer;
+            offer[mode] = ''
+
+            this.setState({ [mode]: '', offer: offer })
+        } else {
+            this.setState({ [mode]: <input name={mode} type="datetime-local" onChange={this.handleTime} ></input> })
+        }
+    }
+
+    addCategory(event) {
+        let offer = this.state.offer;
+        let category = event.target.name
+        let categoryArr = offer.category
+        const index = categoryArr.findIndex(cat => cat === category)
+        if (index == -1) {
+            categoryArr.push(category)
+            offer.category = categoryArr
+            this.setState({offer: offer, [category]: true })
+        } else {
+            categoryArr.splice(index, 1)
+            offer.category = categoryArr
+            this.setState({offer: offer, [category]: false })
+        }
+    }
+    categoryCheck(category) {
+        let categoryArr = this.state.offer.category
+        const index = categoryArr.findIndex(cat => cat === category)
+        if (index == -1) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+
+
+    getBio() {
+        fetch('http://localhost:3005/api/login/merchant/start-offer',
+            { method: 'GET', mode: 'cors', credentials: 'include' })
+            .then(res => {
+                if (res.status != 200) {
+                    return;
+                }
+                return res.json()
+            })
+            .then(data => {
+                console.log(data.formattedAddress)
+                this.setState({
+                    offer: {
+                        name: data.name,
+                        formattedAddress: data.formattedAddress,
+                        details: '',
+                        deal: '',
+                        images: [],
+                        location: data.location,
+                        tags: data.tags,
+                        category: data.category,
+                        merchantId: data.merchantId,
+                        startDate: '',
+                        endDate: ''
+                    }
+
+                })
+            })
+
+    }
+
+    render() {
+        if (this.state.offer.merchantId) {
+            switch (this.state.selected) {
+                case false:
+                    return (
+                        <div>
+                            <div>
+                                <ImageSlider images={this.state.offer.images} />
+                                <button name="changeImg" onClick={this.handleClick}>add pictures</button>
+                                <h2>{this.state.offer.name}</h2>
+                            </div>
+                            <div>
+                                <textarea style={{ width: '200px', height: '100px', resize: "none" }} placeholder="deal" name="deal" value={this.state.offer.deal} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+                            </div>
+                            <div>
+                                <textarea style={{ width: '400px', height: '200px', resize: "none" }} placeholder="details" name="details" value={this.state.offer.details} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+                            </div>
+                            <div>
+                                <h2>tags</h2>
+                                <AddTags updateTags={this.updateTags} currentSelection={this.state.offer.tags} />
+                            </div>
+                            <div>
+                            <h2>category</h2>
+                                <p>bar</p>
+                                <input type="checkbox" name="bar" onClick={this.addCategory} defaultChecked={this.categoryCheck('bar')}></input>
+
+                                <p>restaurant</p>
+                                <input type="checkbox" name="restaurant" onClick={this.addCategory} defaultChecked={this.categoryCheck('restaurant')}></input>
+
+                                <p>entertainment</p>
+                                <input type="checkbox" name="entertainment" onClick={this.addCategory} defaultChecked={this.categoryCheck('entertainment')}></input>
+                            </div>
+                            <div>
+                                <p>{this.state.dateVal}</p>
+                                <div>
+                                    <p>use start time</p>
+                                    <input type="checkbox" name="startDate" defaultChecked={this.state.startDate} onChange={this.enableDate}></input>
+                                    <p>if left unchecked this offer will began as soon as you push publish</p>
+                                    {this.state.startDate}
+                                </div>
+                                <div>
+                                    <p>use end time</p>
+                                    <input type="checkbox" name="endDate" defaultChecked={this.state.endDate} onChange={this.enableDate}></input>
+                                    <p>if left unchecked you will manually need to end this offer</p>
+                                    {this.state.endDate}
+                                </div>
+                            </div>
+                            <button onClick={this.handlePublish}>Publish</button>
+                            <p>{this.state.publishVal}</p>
+                            <div>
+                                <p>{this.state.backMessage}</p>
+                                <button onClick={this.handleBack}>{this.state.backText}</button>
+                            </div>
+                        </div>
+                    )
+                case 'changeImg':
+                    return (
+                        <div>
+                            <PictureUpload merchantId={this.state.offer.merchantId} currentSelection={this.state.offer.images} onBack={this.onBack} selected={this.getSelected} />
+                        </div>
+                    )
+            }
+        } else {
+            this.getBio()
+            return (
+                <div>
+                </div>
+            )
+        }
+
+
+    }
+}
+
+
+export default CreateOffer;
