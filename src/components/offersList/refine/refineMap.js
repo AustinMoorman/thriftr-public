@@ -41,10 +41,11 @@ class RefineMap extends React.Component {
     render() {
         this.mapMarker()
         return (
-            <Map google={this.props.google} zoom={this.props.zoom}
+            <Map id="refineMap" google={this.props.google} zoom={this.props.zoom}
             initialCenter={{lat: this.props.currentCord.latitude, lng: this.props.currentCord.longitude}} 
             center={{lat: this.props.currentCord.latitude, lng: this.props.currentCord.longitude}}
-            style={{width: 500, height: 500, position: 'relative'}}>
+            mapTypeControl={false} scaleControl={false} streetViewControl={false} panControl={false} rotateControl={false} 
+            style={{height: "60vh", width: "80vw", maxWidth: "800px"}} >
                 {this.mapMarker()}
                 {this.addCircle()}
             </Map>
@@ -52,6 +53,10 @@ class RefineMap extends React.Component {
   }
 }
  
-export default GoogleApiWrapper({
+ export default GoogleApiWrapper({
   apiKey: 'AIzaSyAvSwkP5aKgqIhubRUdI_2xYixBoshD9j0'
-})(RefineMap)
+})(RefineMap) 
+
+//export default RefineMap;
+
+

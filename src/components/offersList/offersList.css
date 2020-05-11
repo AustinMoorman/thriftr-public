@@ -1,0 +1,86 @@
+#offerList {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #3d3d3f;
+    max-width: 720px;
+    margin:  auto;
+  }
+  .offersContainer {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+  .offersContainer div {
+    height: 100%;
+  }
+  .offer div {
+    height: auto;
+  }
+
+.images {
+  margin: 0 auto;
+}
+.offer{
+  display: flex;
+  align-content: space-between;
+  flex-direction: column;
+}
+.notButtons {
+  flex-grow:1;
+}
+
+.offerBottom {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+.offerInfo {
+  flex-grow: 1;
+}
+
+.offerMid {
+  display: flex;
+  justify-content: space-between;
+}
+.offerRight {
+  flex-shrink: 1;
+  width: 33.333vw;
+  max-width: 240px;
+  flex-wrap: wrap;
+  text-align: right;
+  margin: 0 0.75rem;
+}
+.offerLeft {
+  font-size: 0.75rem;
+  margin: 0 0.75rem;
+}
+.offerDetails {
+  margin: 0.5rem 0.75rem;
+}
+.offerButtons {
+  display: flex;
+  justify-content: space-evenly;
+}
+.heart, .offerNext{
+  height: 3rem;
+  width: 3.5rem;
+
+}
+.heart:hover{
+  stroke-width: 0.25rem;
+}
+.offerNext:hover {
+  stroke: #3d3d3f
+}
+.offerNext{
+  stroke: #E0E0E0;
+}
+.offerButtons button {
+  border: none;
+}
+.heartButton:disabled *{
+
+}

@@ -1,0 +1,58 @@
+#home {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #3d3d3f;
+  }
+
+.homeOptions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    flex-grow: 1;
+}
+.homeOptions button {
+    margin: 5vh;
+    width: 80%;
+    max-width: 800px;
+    padding: 0.25rem 1rem;
+    border: 0.3rem solid #E0E0E0;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    color: #3d3d3f;
+    transition: all 0.15s;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+  .homeOptions button:hover {
+    border-color: #7dce94;
+  }
+
+  .homeOptions div {
+      flex-grow: 1;
+      flex-shrink: 1;
+  }
+  .logoutIcon{
+      height: 2.5rem;
+      width: 2.5rem;
+      fill: #808080;
+  }
+  .logout :hover{
+    fill: #3d3d3f;
+}
+
+  .logout button {
+    border: none;
+  }
+  .logout {
+      position: absolute;
+      align-self: start;
+      margin: 0.75rem 0.5rem ;
+
+  }

@@ -15,11 +15,11 @@ loginRouter.use(cookieParser())
 
 const authenticate = async (req, res, next) => {
     const reqUser = req.body
-    console.log(reqUser)
     if (reqUser.type == 'merchant') {
         reqUser.email = reqUser.email.toLowerCase();
         await Merchant.findOne({ email: reqUser.email }, async (err, user) => {
             if (err) {
+                console.log(err)
                 return next(err);
             }
             if (!user) {
@@ -37,6 +37,7 @@ const authenticate = async (req, res, next) => {
         reqUser.email = reqUser.email.toLowerCase();
         await User.findOne({ email: reqUser.email }, async (err, user) => {
             if (err) {
+                console.log(err)
                 return next(err);
             }
             if (!user) {
@@ -48,6 +49,7 @@ const authenticate = async (req, res, next) => {
             }
             req.user = user;
             req.type = 'user';
+            console.log('asdf')
             return next();
         })
     }
@@ -55,6 +57,7 @@ const authenticate = async (req, res, next) => {
 
 
 loginRouter.post('/', authenticate, (req, res, next) => {
+    console.log('sdf')
     const accessToken = jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
         data: { id: req.user.id, email: req.user.email, type: req.type }

@@ -33,8 +33,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>thriftr App</h1>
+      <div id="main">
         <Login />
       </div>
       

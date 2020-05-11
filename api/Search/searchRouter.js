@@ -101,7 +101,8 @@ searchRouter.get('/get-offers', (req, res, next) => {
                     return b.score - a.score
                 })
             }).then(function () {
-                MerchantBio.find({ category: category, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
+                if(offerList.length < 10) {
+                     MerchantBio.find({ category: category, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
                     if (err) {
                         return next(err)
                     }
@@ -118,8 +119,13 @@ searchRouter.get('/get-offers', (req, res, next) => {
                     bioList.sort((a, b) => {
                         return b.score - a.score
                     })
-                    res.json({offerList: offerList.concat(bioList)})
+                    let bioNum = 10 - offerList.length
+                    res.json({offerList: offerList.concat(bioList.splice(0,bioNum))})
                 })
+                }else {
+                    res.json({offerList: offerList.splice(0,10)})
+                }
+               
             })
         })
     }
@@ -145,11 +151,11 @@ searchRouter.get('/get-offers', (req, res, next) => {
 })
 
 searchRouter.post('/add-view', (req,res,next) => {
-    User.updateOne({_id: req.user.id },{$push: {pastViews: {offerId: req.body.offerId}}}, err => {
+   /*  User.updateOne({_id: req.user.id },{$push: {pastViews: {offerId: req.body.offerId}}}, err => {
         if(err){
             next(err)
         }
-    })
+    }) */
     Merchant.updateOne({_id: req.body.merchantId},{$push: {views: {id: req.body.offerId}}}, err => {
         if(err){
             next(err)
@@ -157,5 +163,19 @@ searchRouter.post('/add-view', (req,res,next) => {
     })
     res.send()
 })
+
+searchRouter.post('/add-like', (req,res,next) => {
+    User.updateOne({_id: req.user.id },{$push: {favoritedMerchant: req.body.merchantId}}, err => {
+         if(err){
+             next(err)
+         }
+     })
+     Merchant.updateOne({_id: req.body.merchantId},{$push: {favorites: {id: req.body.offerId}}}, err => {
+         if(err){
+             next(err)
+         }
+     })
+     res.send()
+ })
 
 module.exports = searchRouter;

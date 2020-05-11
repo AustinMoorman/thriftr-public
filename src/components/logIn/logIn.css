@@ -1,0 +1,165 @@
+#login {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #3d3d3f;
+}
+
+
+.head {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0
+}
+
+.green {
+  color: #7dce94;
+}
+
+.merchantLoginIndicator {
+  font-size: 1.5rem;
+  flex-grow: 1;
+}
+
+.loginInputs input {
+  border: none;
+  border-bottom: 2px solid #E0E0E0;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  width: 80vw;
+  max-width: 500px;
+}
+
+.loginInputs p {
+  font-size: 0.75rem;
+}
+.loginInputs {
+  flex-grow: 1;
+}
+
+.val {
+  height: 0.8rem;
+}
+.loginButton {
+  flex-grow: 1;
+}
+
+.loginButton button {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 1rem;
+  border: 0.10rem solid #E0E0E0;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  color: #808080;
+  text-align: center;
+  transition: all 0.15s;
+  font-size: 1rem;
+}
+button {
+  background-color: transparent;
+}
+
+button:hover {
+  color: #3d3d3f;
+  border-color: #3d3d3f;
+}
+
+button:active {
+  border-color: #7dce94;
+}
+
+::placeholder {
+  color: #E0E0E0;
+  opacity: 1;
+}
+
+*:focus {
+  outline: none;
+}
+
+.checkmarkContainer {
+  margin: auto;
+  position: relative;
+  padding-left: 1.5909rem;
+
+  cursor: pointer;
+  font-size: 1rem;
+  color: #808080;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkmarkContainer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1.136rem;
+  width: 1.136rem;
+  background-color: #E0E0E0;
+}
+
+
+.checkmarkContainer:hover input~.checkmark {
+  background-color: #E0E0E0;
+}
+
+
+.checkmarkContainer input:checked~.checkmark {
+  background-color: #7dce94;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkmarkContainer input:checked~.checkmark:after {
+  display: block;
+}
+
+.checkmarkContainer .checkmark:after {
+  left: 0.409rem;
+  top: .227rem;
+  width: .227rem;
+  height: .454rem;
+  border: solid white;
+  border-width: 0 0.136rem 0.136rem 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.loginAsMerchant {
+  flex-grow: 1;
+}
+.registerButton {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 5;
+}
+.registerButton button {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 1rem;
+  border: none;
+  box-sizing: border-box;
+  color: #808080;
+  text-align: center;
+  transition: all 0.15s;
+  font-size: 1rem;
+  font-weight: 500;
+
+}
+.registerButton button:hover {
+  color: #3d3d3f;
+}

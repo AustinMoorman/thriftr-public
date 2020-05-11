@@ -12,14 +12,27 @@ class ImageSlider extends React.Component {
     
     slideCreator() {
         return this.props.images.map(img => {
-            return <div ><img src={img} style={{height: '200px'}} /></div>
+            return <img src={img} className="images" style={{
+                display: "block",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+            verticalAlign: "middle"}}/>
         })
     }
 
     render() {
         return (
-            <SwipeableViews enableMouseEvents>
+            <SwipeableViews 
+            containerStyle={{
+                width: "100vw",
+                maxWidth: "720px",
+                height: "75vw",
+                maxHeight: "540px",
+              }}
+              enableMouseEvents>
                 {this.slideCreator()}
+                {this.props.map}
             </SwipeableViews>
         )
     }

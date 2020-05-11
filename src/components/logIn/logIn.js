@@ -75,7 +75,7 @@ class Login extends React.Component {
         .then(data => {
           console.log(data)
           if (status == 200) {
-            return this.setState({user: data, auth: true})
+            return this.setState({ user: data, auth: true })
           } else {
             this.setState({ loginVal: data.message })
           }
@@ -99,7 +99,7 @@ class Login extends React.Component {
       .then(data => {
         if (status == 200) {
 
-          return this.setState({ auth: true, user: data.user, type: data.user.type})
+          return this.setState({ auth: true, user: data.user, type: data.user.type })
         }
       })
       .catch(err => {
@@ -129,17 +129,17 @@ class Login extends React.Component {
         }
       })
   }
-  regUser(){
-    this.setState({login: false, registerUser: true})
+  regUser() {
+    this.setState({ login: false, registerUser: true })
   }
-  regMerchant(){
-    this.setState({login: false, registerMerchant: true})
+  regMerchant() {
+    this.setState({ login: false, registerMerchant: true })
   }
-  merchantlogin(event){
-    if(this.state.type == 'user'){
-      this.setState({type:'merchant'})
-    }else{
-      this.setState({type:'user'})
+  merchantlogin(event) {
+    if (this.state.type == 'user') {
+      this.setState({ type: 'merchant' })
+    } else {
+      this.setState({ type: 'user' })
     }
   }
   componentDidMount() {
@@ -150,12 +150,11 @@ class Login extends React.Component {
     if (this.state.auth && this.state.type == 'user') {
       return (
         <div>
-          <Home />
-          <button onClick={this.logout}>Logout</button>
+          <Home logout={this.logout}/>
         </div>
       )
 
-    } else if(this.state.auth && this.state.type == 'merchant'){
+    } else if (this.state.auth && this.state.type == 'merchant') {
       return (
         <div>
           <MerchantHome />
@@ -163,15 +162,24 @@ class Login extends React.Component {
         </div>
       )
 
-    }else {
+    } else {
       if (this.state.login) {
         return (
-          <div>
-            <h1>thriftr {this.state.type} Login</h1>
-            <div className="login">
+          <div id="login">
 
-              <p>{this.state.email.val}</p>
-              <input name="email"
+            <div className="head">
+              <h1>thrift<span className="green">r</span></h1>
+            </div>
+
+            <div className="merchantLoginIndicator">
+              {this.state.type == 'merchant' ? <h2>merchan<span className="green">t</span></h2> : ' '}
+            </div>
+
+            <div className="loginInputs">
+              <p className="val">{this.state.email.val}</p>
+              <input type="text"
+              className="email"
+                name="email"
                 value={this.state.email.text}
                 onChange={this.handleChange}
                 onFocus={this.handleFirstClick}
@@ -179,8 +187,9 @@ class Login extends React.Component {
                 placeholder="email" >
               </input>
 
-              <p>{this.state.password.val}</p>
+              <p className="val">{this.state.password.val}</p>
               <input type="password"
+              className="password"
                 name="password"
                 value={this.state.password.text}
                 onChange={this.handleChange}
@@ -188,19 +197,26 @@ class Login extends React.Component {
                 onBlur={this.leaveTextbox}
                 placeholder="password" >
               </input>
+            </div>
+
+            <div className="loginButton">
               <button onClick={this.handleLogin}>login</button>
               <p>{this.state.loginVal}</p>
-              <button onClick={this.checkLogin}>Check log in</button>
-
             </div>
-            <p>login as merchant<input type="checkbox" onClick={this.merchantlogin} value={true} ></input></p>
 
-      
-            <div>
-              <button onClick={this.regUser}>click here to register as a new user</button>
-              <button onClick={this.regMerchant}>click here to register as a new merchant</button>
+            <div className="loginAsMerchant">
+              <label className="checkmarkContainer">login as merchant
+                <input type="checkbox" onClick={this.merchantlogin} value={true} ></input>
+                <span className="checkmark"></span>
+              </label>
             </div>
-            
+
+
+            <div className="registerButton">
+              <button onClick={this.regUser}>register as a new user</button>
+              <button onClick={this.regMerchant}>register as a new merchant</button>
+            </div>
+
           </div>
         )
       } if (this.state.registerUser) {

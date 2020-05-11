@@ -18,6 +18,7 @@ const merchantSchema = mongoose.Schema({
         }
     },
     views: [{id:{type: String}, timeStamp:{type: Number, default: Date.now}}],
+    favorites: [{id:{type: String}, timeStamp:{type: Number, default: Date.now}}],
     images: [String]
 })
 
