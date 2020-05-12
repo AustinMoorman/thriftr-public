@@ -1,6 +1,9 @@
 import React from 'react';
 import ImageSlider from '../../imageSlider/imageSlider';
+import { ReactComponent as Back } from './icon_back.svg'
+import './pictureUpload.css';
 const firebase = require('firebase');
+
 
 class PictureUpload extends React.Component {
     constructor(props) {
@@ -10,7 +13,7 @@ class PictureUpload extends React.Component {
             downloadProgress: 0,
             allImages: [],
             selectedImages: [],
-            imageLimit: ''
+            imageLimit: '',
         }
         this.fileSelectedHandler = this.fileSelectedHandler.bind(this)
         this.fileUploadHandler = this.fileUploadHandler.bind(this)
@@ -92,11 +95,21 @@ class PictureUpload extends React.Component {
     imageDisplay() {
         const img = this.state.allImages.reverse()
         return img.map(element => {
-            let style = { width: '200px', height: '200px' }
+            let imgClass = 'unselected'
             if (this.state.selectedImages.find(img => img == element)) {
-                style = { width: '200px', height: '200px', borderStyle: 'solid' }
+                imgClass = 'selectedBelow'
             }
-            return <img style={style} src={element} name={element} onClick={this.imgClick}></img>
+            return <div className="uploaderImageContainer">
+                <img className={imgClass} src={element} name={element} onClick={this.imgClick}></img>
+            </div>
+        })
+    }
+    selectedImageDisplay() {
+        const img = this.state.selectedImages
+        return img.map(element => {
+            return <div className="uploaderImageContainer">
+                <img className='selectedTop' src={element} name={element} onClick={this.imgClick}></img>
+            </div>
         })
     }
     imgClick(img) {
@@ -143,28 +156,27 @@ class PictureUpload extends React.Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <button onClick={this.onBack} >back</button>
-                    <p>{this.state.noSelectedImage}</p>
+            <div id="pictureUploader">
+                <div className="head" >
+                    <button name="back" onClick={this.onBack}><Back className="backIcon" /></button>
+                    <h1>thrift<span className="green">r</span></h1>
                 </div>
-                <div>
-                    <h2>bio photos</h2>
-                    <p>{this.state.noBioImage}</p>
-                    <ImageSlider images={this.state.selectedImages} />
+                <h2>selected photos</h2>
+                <p className="val">{this.state.noSelectedImage}</p>
+                <div className="uploaderImagegrid">
+                    {this.selectedImageDisplay()}
                 </div>
-
-                <div>
-                    <h2> all photos</h2>
-                    <p>{this.state.imageLimit}</p>
+                <h2> all photos</h2>
+                <p>{this.state.imageLimit}</p>
+                <div className="uploaderImagegrid">
                     {this.imageDisplay()}
                 </div>
 
                 <div>
                     <h2>upload new photo</h2>
                     <progress value={this.state.downloadProgress} max="1"></progress>
-                    <input type="file" onChange={this.fileSelectedHandler} />
-                    <button onClick={this.fileUploadHandler} >Upload files</button>
+                    <input type="file" className="fileSelecter" onChange={this.fileSelectedHandler} />
+                    <button onClick={this.fileUploadHandler} >upload image</button>
                 </div>
             </div>
         )

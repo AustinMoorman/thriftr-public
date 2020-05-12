@@ -1,0 +1,123 @@
+#editBio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #3d3d3f;
+    max-width: 720px;
+    margin:  auto;
+}
+.bioImages {
+    width: "100vw";
+    max-Width: "800px";
+    height: "75vw";
+    max-Height: "600px";
+}
+.bioBottom {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#editBio .head h1 {
+    font-size: 2rem;
+}
+
+.images {
+  margin: 0 auto;
+}
+
+.bioInfo {
+  flex-grow: 1;
+}
+
+.bioMid {
+  display: flex;
+  justify-content: space-between;
+}
+.bioRight {
+  flex-shrink: 1;
+  width: 33.333vw;
+  max-width: 240px;
+  flex-wrap: wrap;
+  text-align: right;
+  margin: 0 0.75rem;
+}
+.bioLeft {
+  font-size: 0.75rem;
+  margin: 0 0.75rem;
+}
+.bioDetails {
+    width: "100vw";
+    max-Width: "800px";
+    resize: none;
+    margin: 0.5rem 0.75rem;
+}
+.bioDetails textarea{
+      width: 100%;
+      min-height: 5rem;
+      resize: vertical;
+  }
+.bioButtons {
+  display: flex;
+  justify-content: space-evenly;
+}
+button {
+    margin: 0.5rem;
+    padding: 0.25rem 1rem;
+    border: 0.10rem solid #E0E0E0;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    color: #808080;
+    text-align: center;
+    transition: all 0.15s;
+    font-size: 1rem;
+  }
+.tags {
+    margin: 0.5rem 0.75rem;
+}
+.tagContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+  .tag {
+      display: flex;
+      align-items: center;
+      
+  }
+  .tag button {
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0;
+      margin: 0.25rem 1.25rem 0.25rem 0.25rem;
+  }
+  .tags input {
+    border: none;
+    border-bottom: 2px solid #E0E0E0;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    width: 60vw;
+    max-width: 300px;
+  }
+  .category {
+    margin: 0.5rem 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    
+  }
+  .category h2 {
+      width: 100%;
+  }
+  .backNSave {
+      margin: 1rem;
+      display: flex;
+      justify-content: space-evenly;
+  }
+  .backNSave button {
+      font-size: 1.5rem;
+  }
+  .backNSave p{
+      text-align: right;
+
+  }

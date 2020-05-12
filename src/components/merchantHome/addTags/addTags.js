@@ -32,7 +32,7 @@ class AddTags extends React.Component {
     tags() {
         return this.state.tags.map(tag => {
             return (
-                <div>
+                <div className="tag">
                     <p>{tag}</p>
                     <button onClick={this.deleteTag} name={tag}>x</button>
                 </div>
@@ -59,9 +59,11 @@ class AddTags extends React.Component {
     render() {
         return (
             <div>
-                {this.tags()}
-        <p>{this.state.toManyTags}</p>
-                <input value={this.state.currentTag} onKeyPress={this.key}></input>
+                <div className="tagContainer">
+                  {this.tags()}  
+                </div>
+        <p className="val">{this.state.toManyTags}</p>
+                <input placeholder="add tag" value={this.state.currentTag} onKeyPress={this.key}></input>
             </div>
         )
     }

@@ -49,7 +49,6 @@ const authenticate = async (req, res, next) => {
             }
             req.user = user;
             req.type = 'user';
-            console.log('asdf')
             return next();
         })
     }
@@ -57,13 +56,13 @@ const authenticate = async (req, res, next) => {
 
 
 loginRouter.post('/', authenticate, (req, res, next) => {
-    console.log('sdf')
     const accessToken = jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
         data: { id: req.user.id, email: req.user.email, type: req.type }
     }, safe.JWTsecret);
     const cookieOptions = { httpOnly: true, expires: new Date(253402300000000) }
     res.cookie('JWT', accessToken, cookieOptions).json({ id: req.user.id, email: req.user.email, type: req.type })
+    loginTimeStamp(req.user.id, req.type)
 });
 
 
@@ -81,6 +80,7 @@ loginRouter.post('/authenticate', (req, res, next) => {
         if (err) {
             return res.status(403).json({ message: 'bad token' });
         }
+        loginTimeStamp(user.data.id,user.data.type)
         return res.status(200).json({ user: user.data });
     })
 })
@@ -111,6 +111,24 @@ const merchantTypeChecker = (req,res,next) => {
         next()
     }else{
         res.status(403).send()
+    }
+}
+const loginTimeStamp = (id,type) => {
+    const date = Date.now()
+    if(type == 'merchant'){
+        Merchant.updateOne({ _id: id }, { $push: { logins: date } }, (err, response) => {
+            if(err){
+                next(err)
+            }
+        })
+    }
+    if(type == 'user'){
+        User.updateOne({ _id: id }, { $push: { logins: date } }, (err, response) => {
+            if(err){
+                next(err)
+            }
+        })
+
     }
 }
 

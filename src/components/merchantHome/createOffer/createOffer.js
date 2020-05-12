@@ -2,8 +2,8 @@ import React from 'react';
 import ImageSlider from '../../imageSlider/imageSlider';
 import PictureUpload from '../pictureUpload/pictureUpload';
 import AddTags from '../addTags/addTags';
+import './createOffer.css'
 
-const DatePicker = require('react-datepicker');
 
 class CreateOffer extends React.Component {
     constructor(props) {
@@ -42,6 +42,7 @@ class CreateOffer extends React.Component {
         this.getBio = this.getBio.bind(this);
         this.addCategory = this.addCategory.bind(this);
         this.categoryCheck = this.categoryCheck.bind(this);
+        this.addressFormatter = this.addressFormatter.bind(this);
     }
 
     handleClick(event) {
@@ -143,11 +144,11 @@ class CreateOffer extends React.Component {
         if (index == -1) {
             categoryArr.push(category)
             offer.category = categoryArr
-            this.setState({offer: offer, [category]: true })
+            this.setState({ offer: offer, [category]: true })
         } else {
             categoryArr.splice(index, 1)
             offer.category = categoryArr
-            this.setState({offer: offer, [category]: false })
+            this.setState({ offer: offer, [category]: false })
         }
     }
     categoryCheck(category) {
@@ -157,6 +158,16 @@ class CreateOffer extends React.Component {
             return false
         } else {
             return true
+        }
+
+    }
+    addressFormatter(address) {
+        if (address) {
+            let addressArr = address.split(',')
+            addressArr.pop()
+            return addressArr.map(line => {
+                return <p>{line}</p>
+            })
         }
     }
 
@@ -198,55 +209,93 @@ class CreateOffer extends React.Component {
             switch (this.state.selected) {
                 case false:
                     return (
-                        <div>
-                            <div>
-                                <ImageSlider images={this.state.offer.images} />
-                                <button name="changeImg" onClick={this.handleClick}>add pictures</button>
-                                <h2>{this.state.offer.name}</h2>
+                        <div id="createOffer">
+                            <div className="head">
+                                <h1>thrift<span className="green">r</span></h1>
                             </div>
-                            <div>
-                                <textarea style={{ width: '200px', height: '100px', resize: "none" }} placeholder="deal" name="deal" value={this.state.offer.deal} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+                            <div className="offerImages">
+                                <ImageSlider className="imageSlider" images={this.state.offer.images} />
                             </div>
-                            <div>
-                                <textarea style={{ width: '400px', height: '200px', resize: "none" }} placeholder="details" name="details" value={this.state.offer.details} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
-                            </div>
-                            <div>
-                                <h2>tags</h2>
-                                <AddTags updateTags={this.updateTags} currentSelection={this.state.offer.tags} />
-                            </div>
-                            <div>
-                            <h2>category</h2>
-                                <p>bar</p>
-                                <input type="checkbox" name="bar" onClick={this.addCategory} defaultChecked={this.categoryCheck('bar')}></input>
 
-                                <p>restaurant</p>
-                                <input type="checkbox" name="restaurant" onClick={this.addCategory} defaultChecked={this.categoryCheck('restaurant')}></input>
+                            <div className="offerBottom">
+                                <div className="offerInfo">
+                                    <div className="offerMid">
+                                        <div className="offerLeft">
+                                            <h1 className="offerTitle">{this.state.offer.name}</h1>
+                                            <div>
+                                                <textarea style={{ width: '200px', height: '100px', resize: "none" }} placeholder="deal" name="deal" value={this.state.offer.deal} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+                                            </div>
+                                        </div>
+                                        <div className="offerRight">
+                                            <button name="changeImg" onClick={this.handleClick}>add pictures</button>
+                                            <p>{this.addressFormatter(this.state.offer.formattedAddress)}</p>
+                                        </div>
+                                    </div>
+                                    <div className="bioDetails">
+                                        <textarea value={this.state.offer.details} onChange={this.handleChange} autoCapitalize="sentences" placeholder="add details"></textarea>
+                                    </div>
+                                    <div className="tags">
+                                        <h2>tags</h2>
+                                        <AddTags updateTags={this.updateTags} currentSelection={this.state.offer.tags} />
 
-                                <p>entertainment</p>
-                                <input type="checkbox" name="entertainment" onClick={this.addCategory} defaultChecked={this.categoryCheck('entertainment')}></input>
-                            </div>
-                            <div>
-                                <p>{this.state.dateVal}</p>
-                                <div>
-                                    <p>use start time</p>
-                                    <input type="checkbox" name="startDate" defaultChecked={this.state.startDate} onChange={this.enableDate}></input>
-                                    <p>if left unchecked this offer will began as soon as you push publish</p>
-                                    {this.state.startDate}
+                                    </div>
+                                    <div className="category">
+                                        <h2>category</h2>
+
+                                        <label className="checkmarkContainer">bar
+                                        <input type="checkbox" name="bar" onClick={this.addCategory} defaultChecked={this.categoryCheck('bar')}></input>
+                                            <span className="checkmark"></span>
+                                        </label>
+
+                                        <label className="checkmarkContainer">restaurant
+                                        <input type="checkbox" name="restaurant" onClick={this.addCategory} defaultChecked={this.categoryCheck('restaurant')}></input>
+                                            <span className="checkmark"></span>
+                                        </label>
+
+                                        <label className="checkmarkContainer">entertainment
+                                        <input type="checkbox" name="entertainment" onClick={this.addCategory} defaultChecked={this.categoryCheck('entertainment')}></input>
+                                            <span className="checkmark"></span>
+                                        </label>
+
+                                    </div>
+                                    <div className="startEnd">
+                                        <h2>pick start and end date</h2>
+                                        <p>if left unchecked this will start when published and will manually need to be ended</p>
+                                        <p className="val">{this.state.dateVal}</p>
+                                        <div>
+                                            <h3>start time</h3>
+                                            <label className="checkmarkContainer">
+                                                <input type="checkbox" name="startDate" defaultChecked={this.state.startDate} onChange={this.enableDate}></input>
+                                                <span className="checkmark"></span>
+                                            </label>
+                                            {this.state.startDate}
+                                        </div>
+                                        <div>
+                                            <h3>end time</h3>
+                                            <label className="checkmarkContainer">
+                                                <input type="checkbox" name="endDate" defaultChecked={this.state.endDate} onChange={this.enableDate}></input>
+                                                <span className="checkmark"></span>
+                                            </label>
+                                            {this.state.endDate}
+                                        </div>
+                                    </div>
+                                    <div className="backNPublish">
+                                        <p className="val">{this.state.publishVal}</p>
+                                        <button onClick={this.handlePublish}>Publish</button>
+                                        <p className="val">{this.state.backMessage}</p>
+                                        <button onClick={this.handleBack}>{this.state.backText}</button>
+                                    </div>
+
                                 </div>
-                                <div>
-                                    <p>use end time</p>
-                                    <input type="checkbox" name="endDate" defaultChecked={this.state.endDate} onChange={this.enableDate}></input>
-                                    <p>if left unchecked you will manually need to end this offer</p>
-                                    {this.state.endDate}
-                                </div>
                             </div>
-                            <button onClick={this.handlePublish}>Publish</button>
-                            <p>{this.state.publishVal}</p>
-                            <div>
-                                <p>{this.state.backMessage}</p>
-                                <button onClick={this.handleBack}>{this.state.backText}</button>
-                            </div>
-                        </div>
+                        </div >
+
+
+
+
+
+
+
                     )
                 case 'changeImg':
                     return (
@@ -269,3 +318,57 @@ class CreateOffer extends React.Component {
 
 
 export default CreateOffer;
+
+
+
+
+
+{/* <div>
+<div>
+    <ImageSlider images={this.state.offer.images} />
+    <button name="changeImg" onClick={this.handleClick}>add pictures</button>
+    <h2>{this.state.offer.name}</h2>
+</div>
+<div>
+    <textarea style={{ width: '200px', height: '100px', resize: "none" }} placeholder="deal" name="deal" value={this.state.offer.deal} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+</div>
+<div>
+    <textarea style={{ width: '400px', height: '200px', resize: "none" }} placeholder="details" name="details" value={this.state.offer.details} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+</div>
+<div>
+    <h2>tags</h2>
+    <AddTags updateTags={this.updateTags} currentSelection={this.state.offer.tags} />
+</div>
+<div>
+    <h2>category</h2>
+    <p>bar</p>
+    <input type="checkbox" name="bar" onClick={this.addCategory} defaultChecked={this.categoryCheck('bar')}></input>
+
+    <p>restaurant</p>
+    <input type="checkbox" name="restaurant" onClick={this.addCategory} defaultChecked={this.categoryCheck('restaurant')}></input>
+
+    <p>entertainment</p>
+    <input type="checkbox" name="entertainment" onClick={this.addCategory} defaultChecked={this.categoryCheck('entertainment')}></input>
+</div>
+<div>
+    <p>{this.state.dateVal}</p>
+    <div>
+        <p>use start time</p>
+        <input type="checkbox" name="startDate" defaultChecked={this.state.startDate} onChange={this.enableDate}></input>
+        <p>if left unchecked this offer will began as soon as you push publish</p>
+        {this.state.startDate}
+    </div>
+    <div>
+        <p>use end time</p>
+        <input type="checkbox" name="endDate" defaultChecked={this.state.endDate} onChange={this.enableDate}></input>
+        <p>if left unchecked you will manually need to end this offer</p>
+        {this.state.endDate}
+    </div>
+</div>
+<button onClick={this.handlePublish}>Publish</button>
+<p>{this.state.publishVal}</p>
+<div>
+    <p>{this.state.backMessage}</p>
+    <button onClick={this.handleBack}>{this.state.backText}</button>
+</div>
+</div> */}

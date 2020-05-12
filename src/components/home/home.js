@@ -1,6 +1,6 @@
 import React from 'react';
 import './home.css';
-import { ReactComponent as Logout } from './icon_logout.svg'
+import { ReactComponent as Logout } from '../icon_logout.svg'
 
 import OffersList from '../offersList/offersList';
 
@@ -30,6 +30,7 @@ class Home extends React.Component {
     this.setState({ category: null });
   }
   searchParams(currentLocation, radius) {
+    console.log('getting offers search params')
     this.setState({ currentLocation: currentLocation, radius: radius }, () => {
 
       fetch(`http://localhost:3005/api/login/search/get-offers?longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${radius}&category=${this.state.category}`,
@@ -52,7 +53,7 @@ class Home extends React.Component {
   render() {
     if (this.state.category) {
       return (
-        <OffersList category={this.state.category} onBack={this.onBack} searchParams={this.searchParams} currentLocation={this.state.currentLocation} radius={this.state.radius} offerList={this.state.offerList}/>
+        <OffersList category={this.state.category} onBack={this.onBack} searchParams={this.searchParams} currentLocation={this.state.currentLocation} radius={this.state.radius} offerList={this.state.offerList} />
       )
     } else {
       return (
@@ -64,10 +65,15 @@ class Home extends React.Component {
             <h1>thrift<span className="green">r</span></h1>
           </div>
           <div className="homeOptions">
-            <button name="bar" onClick={this.handleClick}>bar</button>
-            <button name="restaurant" onClick={this.handleClick}>restaurant</button>
-            <button name="entertainment" onClick={this.handleClick}>entertainment</button>
-            <div></div>
+            <div>
+              <button name="bar" onClick={this.handleClick}>bar</button>
+            </div>
+            <div>
+              <button name="restaurant" onClick={this.handleClick}>restaurant</button>
+            </div>
+            <div>
+              <button name="entertainment" onClick={this.handleClick}>entertainment</button>
+            </div>
           </div>
 
         </div>

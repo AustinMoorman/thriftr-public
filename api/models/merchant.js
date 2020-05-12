@@ -19,7 +19,8 @@ const merchantSchema = mongoose.Schema({
     },
     views: [{id:{type: String}, timeStamp:{type: Number, default: Date.now}}],
     favorites: [{id:{type: String}, timeStamp:{type: Number, default: Date.now}}],
-    images: [String]
+    images: [String],
+    logins: [String]
 })
 
 module.exports = mongoose.model('Merchant',merchantSchema);

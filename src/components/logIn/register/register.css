@@ -1,0 +1,45 @@
+.registerUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.registerUserInputs input {
+    border: none;
+    border-bottom: 2px solid #E0E0E0;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    width: 80vw;
+    max-width: 500px;
+}
+
+.registerUserInputs p {
+    font-size: 0.75rem;
+}
+
+.registerUserInputs {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.valPassword {
+    height: 1.8rem;
+    width: 80vw;
+    max-width: 500px;
+    text-align: center;
+}
+
+
+.registerUserInputs button {
+    margin: 1rem 0;
+    padding: 0.25rem 1rem;
+    border: 0.10rem solid #E0E0E0;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    color: #808080;
+    text-align: center;
+    transition: all 0.15s;
+    font-size: 1rem;
+}

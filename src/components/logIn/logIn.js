@@ -31,12 +31,14 @@ class Login extends React.Component {
     this.regMerchant = this.regMerchant.bind(this);
     this.regUser = this.regUser.bind(this);
     this.merchantlogin = this.merchantlogin.bind(this);
+    this.loginReturn = this.loginReturn.bind(this);
 
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: { text: event.target.value } })
   }
+
 
 
   leaveTextbox(event) {
@@ -142,6 +144,9 @@ class Login extends React.Component {
       this.setState({ type: 'user' })
     }
   }
+  loginReturn() {
+    this.setState({login: true, registerUser: false, registerMerchant: false,})
+  }
   componentDidMount() {
     this.checkLogin()
   }
@@ -157,8 +162,7 @@ class Login extends React.Component {
     } else if (this.state.auth && this.state.type == 'merchant') {
       return (
         <div>
-          <MerchantHome />
-          <button onClick={this.logout}>Logout</button>
+          <MerchantHome logout={this.logout}/>
         </div>
       )
 
@@ -201,7 +205,7 @@ class Login extends React.Component {
 
             <div className="loginButton">
               <button onClick={this.handleLogin}>login</button>
-              <p>{this.state.loginVal}</p>
+              <p className="val">{this.state.loginVal}</p>
             </div>
 
             <div className="loginAsMerchant">
@@ -222,14 +226,14 @@ class Login extends React.Component {
       } if (this.state.registerUser) {
         return (
           <div>
-            <Register />
+            <Register loginReturn={this.loginReturn}/>
           </div>
         )
       }
       if (this.state.registerMerchant) {
         return (
           <div>
-            <RegisterMerchant />
+            <RegisterMerchant loginReturn={this.loginReturn}/>
           </div>
         )
       }

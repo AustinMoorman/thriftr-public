@@ -22,7 +22,8 @@ class ImageSlider extends React.Component {
     }
 
     render() {
-        return (
+        if(this.props.map){
+                  return (
             <SwipeableViews 
             containerStyle={{
                 width: "100vw",
@@ -35,6 +36,21 @@ class ImageSlider extends React.Component {
                 {this.props.map}
             </SwipeableViews>
         )
+        }else{
+            return (
+                <SwipeableViews 
+                containerStyle={{
+                    width: "100vw",
+                    maxWidth: "720px",
+                    height: "75vw",
+                    maxHeight: "540px",
+                  }}
+                  enableMouseEvents>
+                    {this.slideCreator()}
+                </SwipeableViews>
+            )
+        }
+  
     }
 }
 

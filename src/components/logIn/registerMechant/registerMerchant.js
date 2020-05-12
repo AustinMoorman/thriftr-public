@@ -73,7 +73,7 @@ class RegisterMerchant extends React.Component {
         if (this.state.password.val || this.state.email.val || this.state.repassword.val || this.state.name.val) {
             this.setState({ registerVal: "please fix the above requirments" })
         } else if (!this.state.placeVar) {
-            this.setState({ placeVal: "if finding your location above doesn't work then your business couldn't be found with google and you should contact us" })
+            this.setState({ placeVal: "if finding your location below doesn't work then your business couldn't be found with google and you should contact us" })
 
         } else {
             const body = {
@@ -97,7 +97,7 @@ class RegisterMerchant extends React.Component {
                         })
                     } else if (res.status == 304) {
                         this.setState({ registerVal: 'location or email is already taken please try logging in' })
-                    }else{
+                    } else {
                         this.setState({ registerVal: 'there was an error please try again' })
                     }
                 })
@@ -120,72 +120,33 @@ class RegisterMerchant extends React.Component {
                                 formattedAddress: place.formatted_address,
                                 googleId: place.place_id
                             },
-                            name: {text: name, val: ''},
+                            name: { text: name, val: '' },
                             placeVar: true
                         })
                     } else {
                         this.setState({ placeVal: 'this location already has an account try logging in' })
                     }
                 }
-            )
+                )
         }
     }
 
     render() {
-        if (!this.state.nextRegisterScreen) {
-            return (
-                <div>
-                    <h1>thriftr Register Merchant</h1>
-                    <div className="register">
-                        <AutoComplete
-                            id="autoComplete"
-                            style={{ width: '500px' }}
-                            types="establishment"
-                            placeholder="enter name followed by address"
-                            onPlaceSelected={this.setPlace}
-                        />
-                        <p>{this.state.placeVal}</p>
-
-                        <p>{this.state.email.val}</p>
-                        <input name="email"
-                            value={this.state.email.text}
-                            onChange={this.handleChange}
-                            onFocus={this.handleFirstClick}
-                            onBlur={this.leaveTextbox}
-                            placeholder="email" >
-                        </input>
-
-                        <p>{this.state.password.val}</p>
-                        <input type="password"
-                            name="password"
-                            value={this.state.password.text}
-                            onChange={this.handleChange}
-                            onFocus={this.handleFirstClick}
-                            onMouseDown={this.handleFirstClick}
-                            onBlur={this.leaveTextbox}
-                            placeholder="password" >
-                        </input>
-
-                        <p>{this.state.repassword.val}</p>
-                        <input type="password"
-                            name="repassword"
-                            value={this.state.repassword.text}
-                            onChange={this.handleChange}
-                            onFocus={this.handleFirstClick}
-                            onMouseDown={this.handleFirstClick}
-                            onBlur={this.leaveTextbox}
-                            placeholder="confirm password">
-                        </input>
-                        <button onClick={this.handleRegister}>Register</button>
-                        <p>{this.state.registerVal}</p>
-                    </div>
-
+        return (
+            <div className="registerUser">
+                <div className="head">
+                    <h1>thrift<span className="green">r</span></h1>
                 </div>
+                <div className="registerUserInputs">
+                <p className="valPassword">{this.state.placeVal}</p>
+                    <AutoComplete
+                        id="autoComplete"
+                        types="establishment"
+                        placeholder="enter name followed by address"
+                        onPlaceSelected={this.setPlace}
+                    />
 
-            )
-        } else {
-            return (
-                <div>
+                    <p className="val">{this.state.email.val}</p>
                     <input name="email"
                         value={this.state.email.text}
                         onChange={this.handleChange}
@@ -193,11 +154,36 @@ class RegisterMerchant extends React.Component {
                         onBlur={this.leaveTextbox}
                         placeholder="email" >
                     </input>
-                    <p>{this.state.email.val}</p>
-                </div>
-            )
-        }
 
+                    <p className="valPassword">{this.state.password.val}</p>
+                    <input type="password"
+                        name="password"
+                        value={this.state.password.text}
+                        onChange={this.handleChange}
+                        onFocus={this.handleFirstClick}
+                        onMouseDown={this.handleFirstClick}
+                        onBlur={this.leaveTextbox}
+                        placeholder="password" >
+                    </input>
+
+                    <p className="val">{this.state.repassword.val}</p>
+                    <input type="password"
+                        name="repassword"
+                        value={this.state.repassword.text}
+                        onChange={this.handleChange}
+                        onFocus={this.handleFirstClick}
+                        onMouseDown={this.handleFirstClick}
+                        onBlur={this.leaveTextbox}
+                        placeholder="confirm password">
+                    </input>
+                    <button onClick={this.handleRegister}>Register</button>
+                    <p className="val">{this.state.registerVal}</p>
+                    <button onClick={this.props.loginReturn}>return to login</button>
+                </div>
+
+            </div>
+
+        )
     }
 }
 

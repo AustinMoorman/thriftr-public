@@ -38,6 +38,6 @@ class OfferMap extends React.Component {
 }
  
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyAvSwkP5aKgqIhubRUdI_2xYixBoshD9j0'
+  apiKey: process.env.REACT_APP_GOOGLE_MAPS_APIKEY
 })(OfferMap)
 

@@ -7,22 +7,22 @@ import Login from '../logIn/logIn';
 import firebase from "firebase/app";
 import "firebase/storage";
 
+console.log()
 const firebaseConfig = {
-  apiKey: "AIzaSyAvSwkP5aKgqIhubRUdI_2xYixBoshD9j0",
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
   authDomain: "thriftr.firebaseapp.com",
   databaseURL: "https://thriftr.firebaseio.com",
   projectId: "thriftr",
   storageBucket: "thriftr.appspot.com",
-  messagingSenderId: "361385747218",
-  appId: "1:361385747218:web:b1269989487bacfe8009cb",
-  measurementId: "G-KF249Z8WNT"
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDERID,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 };
 
 // Initialize Firebase
 
 firebase.initializeApp(firebaseConfig);
 
-const storage = firebase.storage().ref()
 
 class App extends React.Component {
   constructor(props) {

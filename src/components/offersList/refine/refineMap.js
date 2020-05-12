@@ -26,10 +26,10 @@ class RefineMap extends React.Component {
                 return (
                     <Circle radius={this.props.radius * 1609.344}
                     center={{lat: this.props.currentCord.latitude, lng: this.props.currentCord.longitude}} 
-                    strokeColor= '#FF0000'
+                    strokeColor= '#7dce94'
                     strokeOpacity= {0.8}
                     strokeWeight= {2}
-                    fillColor= '#FF0000'
+                    fillColor= '#7dce94'
                     fillOpacity= {0.35}
                     />
                 )
@@ -45,7 +45,7 @@ class RefineMap extends React.Component {
             initialCenter={{lat: this.props.currentCord.latitude, lng: this.props.currentCord.longitude}} 
             center={{lat: this.props.currentCord.latitude, lng: this.props.currentCord.longitude}}
             mapTypeControl={false} scaleControl={false} streetViewControl={false} panControl={false} rotateControl={false} 
-            style={{height: "60vh", width: "80vw", maxWidth: "800px"}} >
+            style={{height: "60vh", width: "80vw", maxWidth: "720px"}} >
                 {this.mapMarker()}
                 {this.addCircle()}
             </Map>
@@ -54,7 +54,7 @@ class RefineMap extends React.Component {
 }
  
  export default GoogleApiWrapper({
-  apiKey: 'AIzaSyAvSwkP5aKgqIhubRUdI_2xYixBoshD9j0'
+  apiKey: process.env.REACT_APP_GOOGLE_MAPS_APIKEY
 })(RefineMap) 
 
 //export default RefineMap;

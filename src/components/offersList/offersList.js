@@ -8,7 +8,7 @@ class OffersList extends React.Component {
     super(props)
     this.state = {
       offerList: false,
-      hideOffers: true
+      hideOffers: true,
     }
     this.getOffers = this.getOffers.bind(this);
     this.hideOffers = this.hideOffers.bind(this);
@@ -44,7 +44,7 @@ class OffersList extends React.Component {
     if(!this.props.offerList || this.state.hideOffers) {
       return (
         <div id="offerList">
-          <Refine showOffers={this.showOffers} hideOffers={this.hideOffers} onBack={this.props.onBack} setLocation={this.props.setLocation} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams} getOffers={this.getOffers}/>
+          <Refine refineOpen={this.state.hideOffers} showOffers={this.showOffers} hideOffers={this.hideOffers} onBack={this.props.onBack} setLocation={this.props.setLocation} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams} getOffers={this.getOffers}/>
         </div>
         
       )
@@ -53,7 +53,7 @@ class OffersList extends React.Component {
       return (
         <div id="offerList">
           <div>
-                  <Refine hideOffers={this.hideOffers} showOffers={this.showOffers} onBack={this.props.onBack} setLocation={this.props.setLocation} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams} getOffers={this.getOffers}/>
+                  <Refine refineOpen={this.state.hideOffers} hideOffers={this.hideOffers} showOffers={this.showOffers} onBack={this.props.onBack} setLocation={this.props.setLocation} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams} getOffers={this.getOffers}/>
           </div>
           <div className="offersContainer">
             <Offers offerList={this.props.offerList} currentLocation={this.props.currentLocation} radius={this.props.radius} />

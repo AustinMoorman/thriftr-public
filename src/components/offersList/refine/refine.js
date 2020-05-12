@@ -27,7 +27,6 @@ class Refine extends React.Component {
 
   openRefine() {
     this.props.hideOffers()
-    this.setState({ full: true })
   }
   findLocation() {
     if (!navigator.geolocation) {
@@ -89,20 +88,20 @@ class Refine extends React.Component {
 
   }
   collapse() {
-    if (this.state.currentCord !== { latitude: 39.8283, longitude: -98.5795 }) {
+    console.log('collapse')
+    if (this.state.currentCord.latitude !== 39.8283 && this.state.currentCord.longitude !== -98.5795 ) {
       this.props.searchParams(this.state.currentCord, this.state.radius);
     }
     this.props.showOffers()
-    this.setState({ full: false });
   }
   componentDidMount() {
-    if (this.props.currentLocation && this.props.radius) {
-      this.setState({ full: false })
+    if(this.props.currentLocation.latitude && this.props.currentLocation.longitude){
+       this.setState({ currentCord: this.props.currentLocation, zoom: 10, radius: this.props.radius })
     }
   }
 
   render() {
-    if (this.state.full) {
+    if (this.props.refineOpen) {
       return (
         <div id="refineExtended" className="refine">
           <div class="notMap">

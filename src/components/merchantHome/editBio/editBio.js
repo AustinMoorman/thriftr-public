@@ -2,6 +2,8 @@ import React from 'react';
 import ImageSlider from '../../imageSlider/imageSlider';
 import PictureUpload from '../pictureUpload/pictureUpload';
 import AddTags from '../addTags/addTags';
+import OfferMap from '../../offersList/offers/offerMap/offerMap'
+import './editBio.css'
 
 class EditBio extends React.Component {
     constructor(props) {
@@ -34,6 +36,7 @@ class EditBio extends React.Component {
         this.updateTags = this.updateTags.bind(this);
         this.addCategory = this.addCategory.bind(this);
         this.categoryCheck = this.categoryCheck.bind(this);
+        this.addressFormatter = this.addressFormatter.bind(this);
     }
 
     getBio() {
@@ -110,6 +113,15 @@ class EditBio extends React.Component {
             this.setState({ save: 'save', change: true, bio: bio, [category]: false })
         }
     }
+    addressFormatter(address) {
+        if (address) {
+            let addressArr = address.split(',')
+            addressArr.pop()
+            return addressArr.map(line => {
+                return <p>{line}</p>
+            })
+        }
+    }
 
     categoryCheck(category) {
         let categoryArr = this.state.bio.category
@@ -120,42 +132,75 @@ class EditBio extends React.Component {
             return true
         }
     }
+    componentDidMount() {
+        this.getBio()
+    }
 
     render() {
         if (this.state.bio.merchantId) {
             switch (this.state.selected) {
                 case false:
                     return (
-                        <div>
-                            <div>
-                                <ImageSlider images={this.state.bio.images} />
-                                <button name="changeImg" onClick={this.handleClick}>add pictures</button>
-                                <h2>{this.state.bio.name}</h2>
+                        <div id="editBio">
+                            <div className="head">
+                                <h1>thrift<span className="green">r</span></h1>
                             </div>
-                            <div>
-                                <textarea style={{ width: '400px', height: '200px', resize: "none" }} value={this.state.bio.bio} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+                            <div className="bioImages">
+                                <ImageSlider className="imageSlider" images={this.state.bio.images} />
                             </div>
-                            <div>
-                                <h2>tags</h2>
-                                <AddTags updateTags={this.updateTags} currentSelection={this.state.bio.tags} />
-                            </div>
-                            <div>
-                                <h2>category</h2>
-                                <p>bar</p>
-                                <input type="checkbox" name="bar" onClick={this.addCategory} defaultChecked={this.categoryCheck('bar')}></input>
 
-                                <p>restaurant</p>
-                                <input type="checkbox" name="restaurant" onClick={this.addCategory} defaultChecked={this.categoryCheck('restaurant')}></input>
+                            <div className="bioBottom">
+                                <div className="bioInfo">
+                                    <div className="bioMid">
+                                        <div className="bioLeft">
+                                            <button name="changeImg" onClick={this.handleClick}>add pictures</button>
+                                            <h1 className="bioTitle">{this.state.bio.name}</h1>
+                                        </div>
+                                        <div className="bioRight">
+                                            <p>{this.addressFormatter(this.state.bio.formattedAddress)}</p>
+                                        </div>
+                                    </div>
+                                    <div className="bioDetails">
+                                        <textarea value={this.state.bio.bio} onChange={this.handleChange} autoCapitalize="sentences" placeholder="add bio"></textarea>
+                                    </div>
+                                    <div className="tags">
+                                        <h2>tags</h2>
+                                        <AddTags updateTags={this.updateTags} currentSelection={this.state.bio.tags} />
 
-                                <p>entertainment</p>
-                                <input type="checkbox" name="entertainment" onClick={this.addCategory} defaultChecked={this.categoryCheck('entertainment')}></input>
+                                    </div>
+                                    <div className="category">
+                                        <h2>category</h2>
+
+                                        <label className="checkmarkContainer">bar
+                                        <input type="checkbox" name="bar" onClick={this.addCategory} defaultChecked={this.categoryCheck('bar')}></input>
+                                            <span className="checkmark"></span>
+                                        </label>
+
+                                        <label className="checkmarkContainer">restaurant
+                                        <input type="checkbox" name="restaurant" onClick={this.addCategory} defaultChecked={this.categoryCheck('restaurant')}></input>
+                                            <span className="checkmark"></span>
+                                        </label>
+
+                                        <label className="checkmarkContainer">entertainment
+                                        <input type="checkbox" name="entertainment" onClick={this.addCategory} defaultChecked={this.categoryCheck('entertainment')}></input>
+                                            <span className="checkmark"></span>
+                                        </label>
+
+                                    </div>
+                                    <div className="backNSave">
+                                        <button onClick={this.handleSave}>{this.state.save}</button>
+                                        <p>{this.state.backMessage}</p>
+                                        <button onClick={this.handleBack}>{this.state.backText}</button>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div>
-                                <button onClick={this.handleSave}>{this.state.save}</button>
-                                <p>{this.state.backMessage}</p>
-                                <button onClick={this.handleBack}>{this.state.backText}</button>
-                            </div>
-                        </div>
+                        </div >
+
+
+
+
+
                     )
                 case 'changeImg':
                     return (
@@ -165,9 +210,9 @@ class EditBio extends React.Component {
                     )
             }
         } else {
-            this.getBio()
             return (
                 <div>
+                    loading
                 </div>
             )
         }
@@ -176,3 +221,4 @@ class EditBio extends React.Component {
 
 
 export default EditBio;
+

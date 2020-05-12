@@ -4,6 +4,7 @@ import EditBio from './editBio/editBio';
 import CreateOffer from './createOffer/createOffer';
 import ViewOffers from './viewOffers/viewOffers';
 import Analytics from './analytics/analytics';
+import { ReactComponent as Logout } from '../icon_logout.svg'
 
 
 
@@ -24,7 +25,7 @@ class MerchantHome extends React.Component {
 
     }
     onBack() {
-        this.setState({selected: false})
+        this.setState({ selected: false })
     }
 
 
@@ -35,13 +36,31 @@ class MerchantHome extends React.Component {
         switch (this.state.selected) {
             case false:
                 return (
-                    <div>
-                        <h1>Merchant Home</h1>
-                        <button onClick={this.handleClick} name="edit bio">edit bio</button>
-                        <button onClick={this.handleClick} name="create offer">create offer</button>
-                        <button onClick={this.handleClick} name="current offers">current offers</button>
-                        <button onClick={this.handleClick} name="past offers">past offers</button>
-                        <button onClick={this.handleClick} name="analytics">analytics</button>
+                    <div id="home">
+                        <div className="logout">
+                            <button name="logoutButton" onClick={this.props.logout}><Logout className="logoutIcon" /></button>
+                        </div>
+                        <div className="head">
+                            <h1>thrift<span className="green">r</span></h1>
+                        </div>
+                        <div className="homeOptions">
+                            <div>
+                                <button onClick={this.handleClick} name="edit bio">edit bio</button>
+                            </div>
+                            <div>
+                                <button onClick={this.handleClick} name="create offer">create offer</button>
+                            </div>
+                            <div>
+                                <button onClick={this.handleClick} name="current offers">current offers</button>
+                            </div>
+                            <div>
+                                <button onClick={this.handleClick} name="past offers">past offers</button>
+                            </div>
+                            <div>  
+                                <button onClick={this.handleClick} name="analytics">analytics</button>
+                            </div>
+                        </div>
+
                     </div>
                 )
             case 'edit bio':
@@ -53,7 +72,7 @@ class MerchantHome extends React.Component {
             case 'create offer':
                 return (
                     <div>
-                        <CreateOffer onBack={this.onBack}/>
+                        <CreateOffer onBack={this.onBack} />
                     </div>
                 )
             case 'current offers':
