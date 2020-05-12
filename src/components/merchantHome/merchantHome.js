@@ -50,6 +50,7 @@ class MerchantHome extends React.Component {
                             <div>
                                 <button onClick={this.handleClick} name="create offer">create offer</button>
                             </div>
+                            ▼ ▼ ▼ under contruction ▼ ▼ ▼
                             <div>
                                 <button onClick={this.handleClick} name="current offers">current offers</button>
                             </div>

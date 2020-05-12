@@ -24,10 +24,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 
+
+
 class App extends React.Component {
   constructor(props) {
     super(props)
-    
   }
 
 
@@ -36,7 +37,7 @@ class App extends React.Component {
       <div id="main">
         <Login />
       </div>
-      
+
     )
   }
 }
