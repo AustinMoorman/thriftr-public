@@ -5,7 +5,6 @@
     color: #3d3d3f;
     max-width: 720px;
     margin:  auto;
-    border: red solid;
 }
 .offerImages {
     width: "100vw";
@@ -47,6 +46,7 @@
 .offerLeft {
   font-size: 0.75rem;
   margin: 0 0.75rem;
+  flex-grow: 1;
 }
 .offerDetails {
     width: "100vw";
@@ -55,10 +55,19 @@
     margin: 0.5rem 0.75rem;
 }
 .offerDetails textarea{
+  font-size: 1rem;
       width: 100%;
       min-height: 5rem;
       resize: vertical;
   }
+
+  .offerDeal textarea{
+    font-size: 1rem;
+    font-weight: 700;
+        width: 100%;
+        min-height: 5rem;
+        resize: none;
+    }
 .offerButtons {
   display: flex;
   justify-content: space-evenly;
@@ -127,6 +136,13 @@ button {
       font-size: 1rem;
       margin-bottom: 0.25rem;
   }
+  .startEnd h3 {
+    font-size: 0.875rem;
+  }
+  .startEnd div {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
   .startEnd input {
     font-size: 1rem;
     width: 14rem;
@@ -138,6 +154,7 @@ button {
       display: flex;
       flex-direction: column;
       justify-content: center;
+      margin-bottom: 3rem;
   }
   .backNPublish button {
       font-size: 1.5rem;

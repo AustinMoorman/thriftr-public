@@ -16,7 +16,7 @@ const authenticate = async (req, res, next) => {
         reqUser.email = reqUser.email.toLowerCase();
         await Merchant.findOne({ email: reqUser.email }, async (err, user) => {
             if (err) {
-                console.log(err)
+
                 return next(err);
             }
             if (!user) {
@@ -34,7 +34,6 @@ const authenticate = async (req, res, next) => {
         reqUser.email = reqUser.email.toLowerCase();
         await User.findOne({ email: reqUser.email }, async (err, user) => {
             if (err) {
-                console.log(err)
                 return next(err);
             }
             if (!user) {
@@ -50,16 +49,38 @@ const authenticate = async (req, res, next) => {
         })
     }
 }
+const createGuest = async (req,res,next) => {
+    const guestVar = Math.floor(Math.random() * 1000)
+    const guestUser = {
+        name: 'guest',
+        email: `guest@${Date.now()}-${guestVar}`,
+        password: guestVar,
+        guest: true
+    }
+    await User(guestUser).save((err, response) => {
+        if (err) {
+            return next(err);
+        } else {
+            const accessToken = jwt.sign({
+                expiresIn: "365 days",
+                data: { id: response._id, email: response.email, type: 'user' }
+            }, process.env.REACT_APP_JWT_SECRET);
+            const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "none" }
+            res.cookie('JWT', accessToken, cookieOptions).json({ user: {id: response._id, email: response.email, type: 'user'}})
+            loginTimeStamp(response._id, 'user')
+        }
+    })
+}
 
 
 loginRouter.post('/', authenticate, (req, res, next) => {
     const accessToken = jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
+        expiresIn: "365 days",
         data: { id: req.user.id, email: req.user.email, type: req.type }
     }, process.env.REACT_APP_JWT_SECRET);
-    const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 8 * 3600000), sameSite: "none"}
+    const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "none" }
     res.cookie('JWT', accessToken, cookieOptions).json({ id: req.user.id, email: req.user.email, type: req.type })
-    loginTimeStamp(req.user.id, req.type)
+    loginTimeStamp(req.user.id, req.type).status(200);
 });
 
 
@@ -69,22 +90,20 @@ loginRouter.delete('/', (req, res, next) => {
 })
 
 loginRouter.post('/authenticate', (req, res, next) => {
-    console.log(req.cookies)
     const token = req.cookies.JWT
-    if (token === null) {
-        return res.status(401).json({ message: 'no token found' })
+    if (!token) {
+        return createGuest(req,res,next)
     }
     jwt.verify(token, process.env.REACT_APP_JWT_SECRET, (err, user) => {
         if (err) {
             return res.status(403).json({ message: 'bad token' });
         }
-        loginTimeStamp(user.data.id,user.data.type)
+        loginTimeStamp(user.data.id, user.data.type)
         return res.status(200).json({ user: user.data });
     })
 })
 
 const authenticateMiddleware = (req, res, next) => {
-    console.log(req.cookies)
     const token = req.cookies.JWT
     if (token === null) {
         return res.status(401).json({ message: 'no token found' })
@@ -98,32 +117,32 @@ const authenticateMiddleware = (req, res, next) => {
     })
 
 }
-const userTypeChecker = (req,res,next) => {
-    if(req.user.type === 'user'){
+const userTypeChecker = (req, res, next) => {
+    if (req.user.type === 'user') {
         return next()
-    }else{
+    } else {
         res.status(403).send()
     }
 }
-const merchantTypeChecker = (req,res,next) => {
-    if(req.user.type === 'merchant'){
+const merchantTypeChecker = (req, res, next) => {
+    if (req.user.type === 'merchant') {
         return next()
-    }else{
+    } else {
         res.status(403).send()
     }
 }
-const loginTimeStamp = (id,type) => {
+const loginTimeStamp = (id, type) => {
     const date = Date.now()
-    if(type === 'merchant'){
+    if (type === 'merchant') {
         Merchant.updateOne({ _id: id }, { $push: { logins: date } }, (err, response) => {
-            if(err){
+            if (err) {
                 return next(err)
             }
         })
     }
-    if(type === 'user'){
+    if (type === 'user') {
         User.updateOne({ _id: id }, { $push: { logins: date } }, (err, response) => {
-            if(err){
+            if (err) {
                 return next(err)
             }
         })

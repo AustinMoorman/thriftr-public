@@ -161,7 +161,7 @@ class EditBio extends React.Component {
                                         </div>
                                     </div>
                                     <div className="bioDetails">
-                                        <textarea value={this.state.bio.bio} onChange={this.handleChange} autoCapitalize="sentences" placeholder="add bio"></textarea>
+                                        <textarea name="bio" value={this.state.bio.bio} onChange={this.handleChange} autoCapitalize="sentences" placeholder="add bio"></textarea>
                                     </div>
                                     <div className="tags">
                                         <h2>tags</h2>

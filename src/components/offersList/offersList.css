@@ -1,5 +1,5 @@
 #offerList {
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,17 +60,29 @@
   font-size: 0.75rem;
   margin: 0 0.75rem;
 }
-.offerDetails {
-  margin: 0.5rem 0.75rem;
+.offerLeft h2 {
+  font-size: 1rem;
+  margin-top: 0.375rem;
+}
+p.offerDetails{
+  margin: 0.5rem 0.75rem 3.5rem 0.75rem;
 }
 .offerButtons {
+  position: fixed;
   display: flex;
   justify-content: space-evenly;
+  width: 100%;
+  max-width: 720px;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.offerButtons button {
+  padding: 0;
+  margin: 0;
 }
 .heart, .offerNext{
   height: 3rem;
   width: 3.5rem;
-
 }
 .heart:hover{
   stroke-width: 0.25rem;

@@ -28,7 +28,6 @@ class Offers extends React.Component {
   }
   getTimeLeft(endDate) {
     const timeLeft = Math.round(endDate / 60000 - Date.now() / 60000)
-    console.log(timeLeft)
     if (timeLeft < 60) {
       return `ending in ${timeLeft} minutes`
     } else {
@@ -103,8 +102,8 @@ class Offers extends React.Component {
   }
 
   load() {
-    if (this.props.offerList[this.state.lastLoaded + 1] && this.state.currentIndex + 3 > this.state.lastLoaded) {
-      this.offerCreator(this.state.lastLoaded + 1)
+    if (this.state.currentIndex + 3 > this.props.offerList.length) {
+      this.props.searchParams(this.props.currentLocation,this.props.radius)
     }
   }
   render() {

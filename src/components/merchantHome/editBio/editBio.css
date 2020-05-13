@@ -54,6 +54,7 @@
     margin: 0.5rem 0.75rem;
 }
 .bioDetails textarea{
+  font-size: 1rem;
       width: 100%;
       min-height: 5rem;
       resize: vertical;

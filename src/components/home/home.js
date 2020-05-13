@@ -1,6 +1,6 @@
 import React from 'react';
 import './home.css';
-import { ReactComponent as Logout } from '../icon_logout.svg'
+
 
 import OffersList from '../offersList/offersList';
 
@@ -11,7 +11,8 @@ class Home extends React.Component {
       category: null,
       currentLocation: { latitude: null, longitude: null },
       radius: null,
-      offerList: false
+      offerList: [],
+      noMoreOffers: false
     }
     this.handleBack = this.handleBack.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -30,22 +31,28 @@ class Home extends React.Component {
     this.setState({ category: null });
   }
   searchParams(currentLocation, radius) {
+    let status;
     this.setState({ currentLocation: currentLocation, radius: radius }, () => {
-
-
-      fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers`,
-        { method: 'POST', mode: 'cors', credentials: 'include', body: JSON.stringify({longitude: currentLocation.longitude, latitude: currentLocation.latitude, radius: radius, category: this.state.category}), headers: { 'Content-Type': 'application/json' }})
-        .then(res => {
-          if (res.status !== 200) {
-            this.setState({ error: 'there was an error' })
-          }
-          return res.json()
-        })
-        .then(data => {
-          console.log(data.offerList)
-          this.setState({ offerList: data.offerList })
-        })
-
+      if (!this.state.noMoreOffers) {
+        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers`,
+          { method: 'POST', mode: 'cors', credentials: 'include', body: JSON.stringify({ longitude: currentLocation.longitude, latitude: currentLocation.latitude, radius: radius, category: this.state.category }), headers: { 'Content-Type': 'application/json' } })
+          .then(res => {
+            status = res.status
+            if (status == 404) {
+              return this.setState({ noMoreOffers: true })
+            }
+            if (status !== 200) {
+              return this.setState({ error: 'there was an error' })
+            }
+            return res.json()
+          })
+          .then(data => {
+            if (status == 200) {
+              let currentOffer = this.state.offerList
+              this.setState({ offerList: currentOffer.concat(data.offerList) })
+            }
+          })
+      }
     })
   }
 
@@ -58,9 +65,6 @@ class Home extends React.Component {
     } else {
       return (
         <div id="home">
-          <div className="logout">
-            <button name="logoutButton" onClick={this.props.logout}><Logout className="logoutIcon" /></button>
-          </div>
           <div className="head">
             <h1>thrift<span className="green">r</span></h1>
           </div>
@@ -73,6 +77,9 @@ class Home extends React.Component {
             </div>
             <div>
               <button name="entertainment" onClick={this.handleClick}>entertainment</button>
+            </div>
+            <div>
+              <button id="logOut" name="logout" onClick={this.props.logout}>logout or create new account</button>
             </div>
           </div>
 

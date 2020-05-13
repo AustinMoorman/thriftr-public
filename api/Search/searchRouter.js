@@ -47,8 +47,9 @@ searchRouter.post('/Add-Location-By-Zipcode', async (req, res, next) => {
 
 
 searchRouter.post('/get-offers', (req, res, next) => {
-    console.log('getting offers')
+    const resAmount = 5;
     const date = Date.now()
+    const recentViewFrame = (date - (1000 * 60))
     const latitude = Number(req.body.latitude)
     const longitude = Number(req.body.longitude)
     const radius = Number(req.body.radius)
@@ -62,23 +63,29 @@ searchRouter.post('/get-offers', (req, res, next) => {
 
     const score = (off, favTags, favMerchant) => {
         const tags = off.tags
-
-        let total = favTags.map(userTag => {
-            let val = 0;
-            tags.forEach(offerTag => {
-                if (userTag.tag === offerTag) {
-                    val = userTag.occurance
-                }
+        if (favTags.length && tags.length) {
+            console.log(favTags)
+            console.log(tags)
+            let total = favTags.map(userTag => {
+                let val = 0;
+                tags.forEach(offerTag => {
+                    if (userTag.tag === offerTag) {
+                        val = userTag.occurance
+                    }
+                })
+                return val
             })
-            return val
-        }) || [0]
-        total = total.reduce((accumulator, currentValue) => accumulator + currentValue)
-        if (favMerchant.includes(off.merchantId)) {
-            total = total * 1.5
+            total = total.reduce((accumulator, currentValue) => accumulator + currentValue)
+            if (favMerchant.includes(off.merchantId)) {
+                total = total * 1.5
+            }
+            return total
+        } else {
+            return 0
         }
-        return total
+
     }
- 
+
     if (latitude && longitude && radius && category) {
         return User.findOne({ _id: req.user.id }, (err, response) => {
             if (err) {
@@ -87,7 +94,7 @@ searchRouter.post('/get-offers', (req, res, next) => {
             recentPastviews = response.pastViews || []
             if (recentPastviews) {
                 recentPastviews = recentPastviews.filter(offer => {
-                    return offer.timeStamp > (date - (1000 * 60 * 60 * 24))
+                    return offer.timeStamp > recentViewFrame
                 })
 
                 recentPastviews = recentPastviews.map(offer => {
@@ -109,14 +116,16 @@ searchRouter.post('/get-offers', (req, res, next) => {
                 offerList = offerList.filter(offer => {
                     return !recentPastviews.includes(offer._id)
                 })
-                offerList.forEach((offer, index) => {
+                if(offerList.length){
+                       offerList.forEach((offer, index) => {
                     offerList[index].score = score(offer, favoritedTags, favoritedMerchant)
                 })
                 offerList.sort((a, b) => {
                     return b.score - a.score
                 })
+                }
             }).then(function () {
-                if (offerList.length < 10) {
+                if (offerList.length < resAmount) {
                     return MerchantBio.find({ category: category, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
                         if (err) {
                             return next(err)
@@ -134,11 +143,16 @@ searchRouter.post('/get-offers', (req, res, next) => {
                         bioList.sort((a, b) => {
                             return b.score - a.score
                         })
-                        let bioNum = 10 - offerList.length
-                        res.json({ offerList: offerList.concat(bioList.splice(0, bioNum)) })
+                        let bioNum = resAmount - offerList.length
+                        let listToSend = offerList.concat(bioList.splice(0, bioNum))
+                        if(listToSend.length){
+                            res.json({ offerList: listToSend })
+                        }else{
+                            res.sendStatus(404);
+                        }
                     })
                 } else {
-                    res.json({ offerList: offerList.splice(0, 10) })
+                    res.json({ offerList: offerList.splice(0, resAmount) })
                     return;
                 }
 
@@ -146,7 +160,7 @@ searchRouter.post('/get-offers', (req, res, next) => {
                 return next(err)
             })
         })
-    }else{
+    } else {
         res.sendStatus(404)
     }
 
@@ -154,11 +168,11 @@ searchRouter.post('/get-offers', (req, res, next) => {
 })
 
 searchRouter.post('/add-view', (req, res, next) => {
-    /*  User.updateOne({_id: req.user.id },{$push: {pastViews: {offerId: req.body.offerId}}}, err => {
-         if(err){
-             next(err)
-         }
-     }) */
+    User.updateOne({ _id: req.user.id }, { $push: { pastViews: { offerId: req.body.offerId } } }, err => {
+        if (err) {
+            next(err)
+        }
+    })
     Merchant.updateOne({ _id: req.body.merchantId }, { $push: { views: { id: req.body.offerId } } }, err => {
         if (err) {
             return next(err)

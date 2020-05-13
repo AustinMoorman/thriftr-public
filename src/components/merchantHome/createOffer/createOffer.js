@@ -222,8 +222,8 @@ class CreateOffer extends React.Component {
                                     <div className="offerMid">
                                         <div className="offerLeft">
                                             <h1 className="offerTitle">{this.state.offer.name}</h1>
-                                            <div>
-                                                <textarea style={{ width: '200px', height: '100px', resize: "none" }} placeholder="deal" name="deal" value={this.state.offer.deal} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
+                                            <div className="offerDeal">
+                                                <textarea placeholder="deal" name="deal" value={this.state.offer.deal} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
                                             </div>
                                         </div>
                                         <div className="offerRight">
@@ -231,8 +231,8 @@ class CreateOffer extends React.Component {
                                             <p>{this.addressFormatter(this.state.offer.formattedAddress)}</p>
                                         </div>
                                     </div>
-                                    <div className="bioDetails">
-                                        <textarea value={this.state.offer.details} onChange={this.handleChange} autoCapitalize="sentences" placeholder="add details"></textarea>
+                                    <div className="offerDetails">
+                                        <textarea name="details" value={this.state.offer.details} onChange={this.handleChange} autoCapitalize="sentences" placeholder="add details"></textarea>
                                     </div>
                                     <div className="tags">
                                         <h2>tags</h2>

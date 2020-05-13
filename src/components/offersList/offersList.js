@@ -10,28 +10,11 @@ class OffersList extends React.Component {
       offerList: false,
       hideOffers: true,
     }
-    this.getOffers = this.getOffers.bind(this);
     this.hideOffers = this.hideOffers.bind(this);
     this.showOffers = this.showOffers.bind(this);
   }
 
-  getOffers() {
-    if(this.props.currentLocation.longitude && this.props.currentLocation.latitude && this.props.radius){
-          fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers?longitude=${this.props.currentLocation.longitude}&latitude=${this.props.currentLocation.latitude}&radius=${this.props.radius}&category=${this.props.category}`,
-    { method: 'GET', mode: 'cors', credentials: 'include' })
-    .then(res => {
-      if(res.status !== 200){
-        this.setState({error: 'there was an error'})
-      }
-      return res.json()
-    })
-    .then(data => {
-      console.log(data.offerList)
-      this.setState({offerList: data.offerList})
-    })
-    }
 
-  }
   hideOffers() {
     this.setState({hideOffers: true})
   }
@@ -41,7 +24,7 @@ class OffersList extends React.Component {
 
 
   render() {
-    if(!this.props.offerList || this.state.hideOffers) {
+    if(!this.props.offerList.length || this.state.hideOffers) {
       return (
         <div id="offerList">
           <Refine refineOpen={this.state.hideOffers} showOffers={this.showOffers} hideOffers={this.hideOffers} onBack={this.props.onBack} setLocation={this.props.setLocation} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams} getOffers={this.getOffers}/>
@@ -56,7 +39,7 @@ class OffersList extends React.Component {
                   <Refine refineOpen={this.state.hideOffers} hideOffers={this.hideOffers} showOffers={this.showOffers} onBack={this.props.onBack} setLocation={this.props.setLocation} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams} getOffers={this.getOffers}/>
           </div>
           <div className="offersContainer">
-            <Offers offerList={this.props.offerList} currentLocation={this.props.currentLocation} radius={this.props.radius} />
+            <Offers offerList={this.props.offerList} currentLocation={this.props.currentLocation} radius={this.props.radius} searchParams={this.props.searchParams}/>
           </div>
     </div>
       )

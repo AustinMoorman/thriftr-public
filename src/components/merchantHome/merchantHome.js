@@ -66,32 +66,32 @@ class MerchantHome extends React.Component {
                 )
             case 'edit bio':
                 return (
-                    <div>
+                    <div className="fullHeight">
                         <EditBio onBack={this.onBack} />
                     </div>
                 )
             case 'create offer':
                 return (
-                    <div>
+                    <div className="fullHeight">
                         <CreateOffer onBack={this.onBack} />
                     </div>
                 )
             case 'current offers':
                 return (
-                    <div>
+                    <div className="fullHeight">
                         current offers
                     </div>
                 )
             case 'past offers':
                 return (
-                    <div>
+                    <div className="fullHeight">
                         past offers
                     </div>
                 )
 
             case 'analytics':
                 return (
-                    <div>
+                    <div className="fullHeight">
                         analytics
                     </div>
                 )

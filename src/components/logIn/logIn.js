@@ -99,7 +99,7 @@ class Login extends React.Component {
       })
       .then(data => {
         if (status == 200) {
-
+          console.log(data)
           return this.setState({ auth: true, user: data.user, type: data.user.type })
         }
       })
@@ -153,14 +153,14 @@ class Login extends React.Component {
   render() {
     if (this.state.auth && this.state.type == 'user') {
       return (
-        <div>
+        <div className="fullHeight">
           <Home logout={this.logout}/>
         </div>
       )
 
     } else if (this.state.auth && this.state.type == 'merchant') {
       return (
-        <div>
+        <div className="fullHeight">
           <MerchantHome logout={this.logout}/>
         </div>
       )
