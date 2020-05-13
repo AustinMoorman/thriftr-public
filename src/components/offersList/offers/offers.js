@@ -72,7 +72,9 @@ class Offers extends React.Component {
     })
   }
   next() {
-    this.changeIndex(this.state.currentIndex + 1)
+    if(this.state.currentIndex + 1 < this.props.offerList.length){
+      this.changeIndex(this.state.currentIndex + 1)
+    }
   }
   like() {
     let liked = this.state.liked
@@ -111,7 +113,7 @@ class Offers extends React.Component {
     return (
       <div className="offer">
         <div className="notButtons">
-          <SlideableViews enableMouseEvents onChangeIndex={this.changeIndex} onTransitionEnd={this.load} index={this.state.currentIndex} containerStyle={{
+          <SlideableViews onChangeIndex={this.changeIndex} onTransitionEnd={this.load} index={this.state.currentIndex} containerStyle={{
           width: "100vw",
           maxWidth: "720px",
           height: "100%"

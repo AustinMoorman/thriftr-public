@@ -30,8 +30,20 @@ class Home extends React.Component {
     console.log('onback')
     this.setState({ category: null });
   }
-  searchParams(currentLocation, radius) {
+  searchParams(currentLocation, radius,reset) {
     let status;
+    const endSlide = {
+      name: "that's it for now",
+      details: "try changing up your search to something different",
+      images: [],
+      location: {
+        coordinates: []
+      }
+
+    }
+    if(reset){
+      this.setState({offerList:[], noMoreOffers:false})
+    }
     this.setState({ currentLocation: currentLocation, radius: radius }, () => {
       if (!this.state.noMoreOffers) {
         fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers`,
@@ -39,17 +51,26 @@ class Home extends React.Component {
           .then(res => {
             status = res.status
             if (status == 404) {
-              return this.setState({ noMoreOffers: true })
+              let currentOfferList = this.state.offerList
+              currentOfferList.push(endSlide)
+              return this.setState({ noMoreOffers: true, offerList: currentOfferList })
             }
             if (status !== 200) {
-              return this.setState({ error: 'there was an error' })
+              return this.setState({ error: 'there was an error',offerList:[endSlide] })
             }
             return res.json()
           })
           .then(data => {
             if (status == 200) {
               let currentOffer = this.state.offerList
-              this.setState({ offerList: currentOffer.concat(data.offerList) })
+              if(data.offerList.length < 5){
+
+                this.setState({ offerList: currentOffer.concat(data.offerList,[endSlide]),noMoreOffers: true })
+
+              }else{
+                this.setState({ offerList: currentOffer.concat(data.offerList) })
+              }
+              
             }
           })
       }
