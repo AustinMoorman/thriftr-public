@@ -30,11 +30,11 @@ class Home extends React.Component {
     this.setState({ category: null });
   }
   searchParams(currentLocation, radius) {
-    console.log('getting offers search params')
     this.setState({ currentLocation: currentLocation, radius: radius }, () => {
 
-      fetch(`http://localhost:3005/api/login/search/get-offers?longitude=${currentLocation.longitude}&latitude=${currentLocation.latitude}&radius=${radius}&category=${this.state.category}`,
-        { method: 'GET', mode: 'cors', credentials: 'include' })
+
+      fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers`,
+        { method: 'POST', mode: 'cors', credentials: 'include', body: JSON.stringify({longitude: currentLocation.longitude, latitude: currentLocation.latitude, radius: radius, category: this.state.category}), headers: { 'Content-Type': 'application/json' }})
         .then(res => {
           if (res.status !== 200) {
             this.setState({ error: 'there was an error' })

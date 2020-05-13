@@ -43,7 +43,7 @@ class Refine extends React.Component {
           longitude: pos.coords.longitude
         }
 
-        fetch('http://localhost:3005/api/login/search/Add-Location',
+        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/Add-Location`,
           { method: 'POST', body: JSON.stringify(currentLocation), mode: 'cors', headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
           .then(res => {
             if (res.status != 200) {
@@ -69,7 +69,7 @@ class Refine extends React.Component {
         return this.setState({ zipcodeVal: " please enter a 5 digit zipzode" })
       }
       let status;
-      fetch('http://localhost:3005/api/login/search/Add-Location-By-Zipcode',
+      fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/Add-Location-By-Zipcode`,
         { method: 'POST', body: JSON.stringify({ zipcode: this.state.zipcode }), mode: 'cors', headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
         .then(res => {
           if (res.status != 200) {

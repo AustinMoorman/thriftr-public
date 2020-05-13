@@ -2,7 +2,6 @@ const express = require('express');
 const registerMerchantRouter = express.Router();
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
-const safe = require('../../ignoredByGit')
 const Merchant = require('../models/merchant')
 const MerchantBio = require('../models/merchantBio');
 
@@ -12,7 +11,7 @@ registerMerchantRouter.post('/verify-id', async (req, res, next) => {
     if (idToCheck) {
         await Merchant.findOne({ googleId: idToCheck }, (err, response) => {
             if (err) {
-                next(err);
+                return next(err);
             } else {
                 if (response) {
                     res.status(304).send('location already has an account')
@@ -31,14 +30,14 @@ registerMerchantRouter.post('/', async (req, res, next) => {
     console.log(newMerchant)
     await Merchant.findOne({ googleId: newMerchant.place.googleId }, async (err, response) => {
         if (err) {
-            next(err)
+            return next(err)
         } else {
             if (response) {
                 res.status(304).send('location already taken')
             } else {
                 await Merchant.findOne({ email: newMerchant.email }, async (err, response) => {
                     if (err) {
-                        next(err);
+                        return next(err);
                     } else {
                         if (response) {
                             console.log(2)
@@ -55,7 +54,7 @@ registerMerchantRouter.post('/', async (req, res, next) => {
                                 location: {type: 'Point', coordinates: [Number(newMerchant.place.longitude),Number(newMerchant.place.latitude)]}
                             }).save(async (err, response) => {
                                 if (err) {
-                                    next(err);
+                                    return next(err);
                                 } else {
                                     await MerchantBio({
                                         name: response.name,
@@ -64,7 +63,7 @@ registerMerchantRouter.post('/', async (req, res, next) => {
                                         location: response.location
                                     }).save((err, response2) => {
                                         if (err) {
-                                            next(err)
+                                            return next(err)
                                         } else {
                                             res.status(201).json({ merchant: response });
                                         }

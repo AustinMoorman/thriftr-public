@@ -68,7 +68,7 @@ class Login extends React.Component {
       this.setState({ email: { text: this.state.email.text, val: 'please provide a valid email' } })
     } else {
       let status;
-      fetch('http://localhost:3005/api/login',
+      fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login`,
         { method: 'POST', body: JSON.stringify(userToLogin), mode: 'cors', headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
         .then(res => {
           status = res.status
@@ -91,8 +91,7 @@ class Login extends React.Component {
 
   checkLogin() {
     let status;
-    console.log('checkLogin')
-    fetch('http://localhost:3005/api/login/authenticate',
+    fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/authenticate`,
       { method: 'POST', mode: 'cors', credentials: 'include' })
       .then(res => {
         status = res.status
@@ -110,7 +109,7 @@ class Login extends React.Component {
   }
 
   logout() {
-    fetch('http://localhost:3005/api/login/',
+    fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/`,
       { method: 'Delete', mode: 'cors', credentials: 'include' })
       .then(res => {
         if (res.status == 200) {
@@ -179,7 +178,7 @@ class Login extends React.Component {
               {this.state.type == 'merchant' ? <h2>merchan<span className="green">t</span></h2> : ' '}
             </div>
 
-            <div className="loginInputs">
+            <form className="loginInputs">
               <p className="val">{this.state.email.val}</p>
               <input type="text"
               className="email"
@@ -201,7 +200,7 @@ class Login extends React.Component {
                 onBlur={this.leaveTextbox}
                 placeholder="password" >
               </input>
-            </div>
+            </form>
 
             <div className="loginButton">
               <button onClick={this.handleLogin}>login</button>

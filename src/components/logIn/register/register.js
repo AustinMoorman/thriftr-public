@@ -61,7 +61,7 @@ class Register extends React.Component {
             this.setState({ registerVal: "please fix the above requirments" })
         } else {
             console.log('register')
-            request.post('http://localhost:3005/api/register', { body: newUser, json: true }, (err, res, body) => {
+            request.post(`${process.env.REACT_APP_EXPRESS_URL}/api/register`, { body: newUser, json: true }, (err, res, body) => {
                 if (res.statusCode == 201) {
                     this.setState({
                         name: { text: '', val: '' },
@@ -85,7 +85,7 @@ class Register extends React.Component {
                 <div className="head">
                     <h1>thrift<span className="green">r</span></h1>
                 </div>
-                <div className="registerUserInputs">
+                <form className="registerUserInputs">
                     <input name="name"
                         value={this.state.name.text}
                         onChange={this.handleChange}
@@ -127,7 +127,7 @@ class Register extends React.Component {
                     <button onClick={this.handleRegister}>register</button>
                     <p className="val">{this.state.registerVal}</p>
                     <button onClick={this.props.loginReturn}>return to login</button>
-                </div>
+                </form>
             </div>
 
         )

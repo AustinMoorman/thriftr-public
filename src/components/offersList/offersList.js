@@ -17,7 +17,7 @@ class OffersList extends React.Component {
 
   getOffers() {
     if(this.props.currentLocation.longitude && this.props.currentLocation.latitude && this.props.radius){
-          fetch(`http://localhost:3005/api/login/search/get-offers?longitude=${this.props.currentLocation.longitude}&latitude=${this.props.currentLocation.latitude}&radius=${this.props.radius}&category=${this.props.category}`,
+          fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers?longitude=${this.props.currentLocation.longitude}&latitude=${this.props.currentLocation.latitude}&radius=${this.props.radius}&category=${this.props.category}`,
     { method: 'GET', mode: 'cors', credentials: 'include' })
     .then(res => {
       if(res.status !== 200){

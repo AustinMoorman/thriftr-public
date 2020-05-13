@@ -55,7 +55,7 @@ class CreateOffer extends React.Component {
 
     handlePublish() {
         if (this.valiDate() && this.state.offer.images && this.state.offer.deal && this.state.offer.details) {
-            fetch('http://localhost:3005/api/login/merchant/add-offer',
+            fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/add-offer`,
                 { method: 'POST', mode: 'cors', body: JSON.stringify({ offer: this.state.offer }), headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
                 .then(res => {
                     if (res.status != 200) {
@@ -174,7 +174,7 @@ class CreateOffer extends React.Component {
 
 
     getBio() {
-        fetch('http://localhost:3005/api/login/merchant/start-offer',
+        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/start-offer`,
             { method: 'GET', mode: 'cors', credentials: 'include' })
             .then(res => {
                 if (res.status != 200) {
@@ -319,56 +319,3 @@ class CreateOffer extends React.Component {
 
 export default CreateOffer;
 
-
-
-
-
-{/* <div>
-<div>
-    <ImageSlider images={this.state.offer.images} />
-    <button name="changeImg" onClick={this.handleClick}>add pictures</button>
-    <h2>{this.state.offer.name}</h2>
-</div>
-<div>
-    <textarea style={{ width: '200px', height: '100px', resize: "none" }} placeholder="deal" name="deal" value={this.state.offer.deal} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
-</div>
-<div>
-    <textarea style={{ width: '400px', height: '200px', resize: "none" }} placeholder="details" name="details" value={this.state.offer.details} onChange={this.handleChange} autoCapitalize="sentences" ></textarea>
-</div>
-<div>
-    <h2>tags</h2>
-    <AddTags updateTags={this.updateTags} currentSelection={this.state.offer.tags} />
-</div>
-<div>
-    <h2>category</h2>
-    <p>bar</p>
-    <input type="checkbox" name="bar" onClick={this.addCategory} defaultChecked={this.categoryCheck('bar')}></input>
-
-    <p>restaurant</p>
-    <input type="checkbox" name="restaurant" onClick={this.addCategory} defaultChecked={this.categoryCheck('restaurant')}></input>
-
-    <p>entertainment</p>
-    <input type="checkbox" name="entertainment" onClick={this.addCategory} defaultChecked={this.categoryCheck('entertainment')}></input>
-</div>
-<div>
-    <p>{this.state.dateVal}</p>
-    <div>
-        <p>use start time</p>
-        <input type="checkbox" name="startDate" defaultChecked={this.state.startDate} onChange={this.enableDate}></input>
-        <p>if left unchecked this offer will began as soon as you push publish</p>
-        {this.state.startDate}
-    </div>
-    <div>
-        <p>use end time</p>
-        <input type="checkbox" name="endDate" defaultChecked={this.state.endDate} onChange={this.enableDate}></input>
-        <p>if left unchecked you will manually need to end this offer</p>
-        {this.state.endDate}
-    </div>
-</div>
-<button onClick={this.handlePublish}>Publish</button>
-<p>{this.state.publishVal}</p>
-<div>
-    <p>{this.state.backMessage}</p>
-    <button onClick={this.handleBack}>{this.state.backText}</button>
-</div>
-</div> */}

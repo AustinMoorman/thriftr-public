@@ -83,7 +83,7 @@ class RegisterMerchant extends React.Component {
                 password: this.state.password.text
             }
             console.log(body)
-            fetch('http://localhost:3005/api/register-merchant',
+            fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/register-merchant`,
                 { method: 'POST', body: JSON.stringify(body), mode: 'cors', headers: { 'Content-Type': 'application/json' } })
                 .then(res => {
                     if (res.status == 201) {
@@ -109,7 +109,7 @@ class RegisterMerchant extends React.Component {
             const name = (document.getElementById('autoComplete').value.split(','))[0]
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
-            fetch('http://localhost:3005/api/register-merchant/verify-id',
+            fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/register-merchant/verify-id`,
                 { method: 'POST', body: JSON.stringify({ googleId: place.place_id }), mode: 'cors', headers: { 'Content-Type': 'application/json' } })
                 .then(res => {
                     if (res.status == 200) {
@@ -137,7 +137,7 @@ class RegisterMerchant extends React.Component {
                 <div className="head">
                     <h1>thrift<span className="green">r</span></h1>
                 </div>
-                <div className="registerUserInputs">
+                <form className="registerUserInputs">
                 <p className="valPassword">{this.state.placeVal}</p>
                     <AutoComplete
                         id="autoComplete"
@@ -179,7 +179,7 @@ class RegisterMerchant extends React.Component {
                     <button onClick={this.handleRegister}>Register</button>
                     <p className="val">{this.state.registerVal}</p>
                     <button onClick={this.props.loginReturn}>return to login</button>
-                </div>
+                </form>
 
             </div>
 

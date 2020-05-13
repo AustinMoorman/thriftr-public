@@ -40,7 +40,7 @@ class EditBio extends React.Component {
     }
 
     getBio() {
-        fetch('http://localhost:3005/api/login/merchant/bio',
+        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/bio`,
             { method: 'GET', mode: 'cors', credentials: 'include' })
             .then(res => {
                 if (res.status != 200) {
@@ -62,7 +62,7 @@ class EditBio extends React.Component {
     }
     handleSave() {
         if (this.state.save === 'save') {
-            fetch('http://localhost:3005/api/login/merchant/update-bio',
+            fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/update-bio`,
                 { method: 'POST', mode: 'cors', body: JSON.stringify({ bio: this.state.bio }), headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
                 .then(res => {
                     if (res.status != 200) {

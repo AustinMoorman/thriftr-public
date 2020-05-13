@@ -48,7 +48,7 @@ class PictureUpload extends React.Component {
                 function complete(snapshot) {
                     updateProgress(0)
                     storageRef.getDownloadURL().then((url) => {
-                        fetch('http://localhost:3005/api/login/merchant/add-image',
+                        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/add-image`,
                             { method: 'POST', mode: 'cors', body: JSON.stringify({ url: url }), headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
                             .then(res => {
                                 if (res.status != 200) {
@@ -75,7 +75,7 @@ class PictureUpload extends React.Component {
 
     getAllimages() {
         let status;
-        fetch('http://localhost:3005/api/login/merchant/all-images',
+        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/all-images`,
             { method: 'GET', mode: 'cors', credentials: 'include' })
             .then(res => {
                 if (res.status != 200) {

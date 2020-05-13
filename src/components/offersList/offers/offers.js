@@ -80,7 +80,7 @@ class Offers extends React.Component {
     const index = this.state.currentIndex;
     if (!liked.includes(index)) {
 
-      fetch('http://localhost:3005/api/login/search/add-like',
+      fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/add-like`,
         { method: 'POST', body: JSON.stringify({ offerId: this.props.offerList[index]._id, merchantId: this.props.offerList[index].merchantId }), mode: 'cors', headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
       liked.push(index)
       this.setState({ liked: liked, color: '#7dce94' })
@@ -97,7 +97,7 @@ class Offers extends React.Component {
       }
     })
     if (index > oldIndex) {
-      fetch('http://localhost:3005/api/login/search/add-view',
+      fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/add-view`,
         { method: 'POST', body: JSON.stringify({ offerId: this.props.offerList[oldIndex]._id, merchantId: this.props.offerList[oldIndex].merchantId }), mode: 'cors', headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
     }
   }
