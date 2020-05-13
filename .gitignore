@@ -23,8 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Keys
-.env
-ignoredByGit.js
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
