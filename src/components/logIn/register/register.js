@@ -85,7 +85,7 @@ class Register extends React.Component {
                 <div className="head">
                     <h1>thrift<span className="green">r</span></h1>
                 </div>
-                <form className="registerUserInputs">
+                <div className="registerUserInputs" >
                     <input name="name"
                         value={this.state.name.text}
                         onChange={this.handleChange}
@@ -127,7 +127,7 @@ class Register extends React.Component {
                     <button onClick={this.handleRegister}>register</button>
                     <p className="val">{this.state.registerVal}</p>
                     <button onClick={this.props.loginReturn}>return to login</button>
-                </form>
+                </div>
             </div>
 
         )

@@ -49,7 +49,7 @@ const authenticate = async (req, res, next) => {
         })
     }
 }
-const createGuest = async (req,res,next) => {
+const createGuest = async (req, res, next) => {
     const guestVar = Math.floor(Math.random() * 1000)
     const guestUser = {
         name: 'guest',
@@ -66,7 +66,7 @@ const createGuest = async (req,res,next) => {
                 data: { id: response._id, email: response.email, type: 'user' }
             }, process.env.REACT_APP_JWT_SECRET);
             const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "none" }
-            res.cookie('JWT', accessToken, cookieOptions).json({ user: {id: response._id, email: response.email, type: 'user'}})
+            res.cookie('JWT', accessToken, cookieOptions).json({ user: { id: response._id, email: response.email, type: 'guest' } })
             loginTimeStamp(response._id, 'user')
         }
     })
@@ -92,15 +92,25 @@ loginRouter.delete('/', (req, res, next) => {
 loginRouter.post('/authenticate', (req, res, next) => {
     const token = req.cookies.JWT
     if (!token) {
-        return createGuest(req,res,next)
+        return createGuest(req, res, next)
+    } else {
+        jwt.verify(token, process.env.REACT_APP_JWT_SECRET, (err, user) => {
+            if (err) {
+                return res.status(403).json({ message: 'bad token' });
+            }
+            loginTimeStamp(user.data.id, user.data.type)
+            if (user.data.type == 'user') {
+                User.findOne({ _id: user.data.id }, (err, response) => {
+                    if (err) {
+                        return next(err)
+                    }
+                    return res.status(200).json({ user: user.data, guest: response.guest })
+                })
+            } else {
+                return res.status(200).json({ user: user.data });
+            }
+        })
     }
-    jwt.verify(token, process.env.REACT_APP_JWT_SECRET, (err, user) => {
-        if (err) {
-            return res.status(403).json({ message: 'bad token' });
-        }
-        loginTimeStamp(user.data.id, user.data.type)
-        return res.status(200).json({ user: user.data });
-    })
 })
 
 const authenticateMiddleware = (req, res, next) => {

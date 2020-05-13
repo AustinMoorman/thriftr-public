@@ -12,6 +12,7 @@ class MerchantHome extends React.Component {
     constructor(props) {
         super(props)
 
+
         this.state = {
             selected: false
         }
@@ -30,16 +31,11 @@ class MerchantHome extends React.Component {
 
 
 
-
-
     render() {
         switch (this.state.selected) {
             case false:
                 return (
                     <div id="home">
-                        <div className="logout">
-                            <button name="logoutButton" onClick={this.props.logout}><Logout className="logoutIcon" /></button>
-                        </div>
                         <div className="head">
                             <h1>thrift<span className="green">r</span></h1>
                         </div>
@@ -57,9 +53,13 @@ class MerchantHome extends React.Component {
                             <div>
                                 <button onClick={this.handleClick} name="past offers">past offers</button>
                             </div>
-                            <div>  
+                            <div>
                                 <button onClick={this.handleClick} name="analytics">analytics</button>
                             </div>
+                            <div>
+                                <button id="logOut" name="logout" onClick={this.props.logout}>logout or create new account</button>
+                            </div>
+                            <p className="userInfo">you are currently signed in under {this.props.email}</p>
                         </div>
 
                     </div>

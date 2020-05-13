@@ -18,6 +18,7 @@ class Home extends React.Component {
     this.handleClick = this.handleClick.bind(this)
     this.onBack = this.onBack.bind(this)
     this.searchParams = this.searchParams.bind(this)
+    this.userInfo = this.userInfo.bind(this)
   }
 
   handleBack() {
@@ -76,6 +77,14 @@ class Home extends React.Component {
       }
     })
   }
+  userInfo() {
+    if(this.props.guest){
+      return <p className="userInfo">you are currently using a guest account. for a better user experience please logout and create a new account</p>
+    }
+    else{
+      return <p className="userInfo">you are currently signed in under {this.props.email}</p>
+    }
+  }
 
 
   render() {
@@ -102,6 +111,7 @@ class Home extends React.Component {
             <div>
               <button id="logOut" name="logout" onClick={this.props.logout}>logout or create new account</button>
             </div>
+            {this.userInfo()}
           </div>
 
         </div>

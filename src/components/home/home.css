@@ -53,3 +53,7 @@
     font-weight: 500;
 
   }
+  .userInfo {
+    margin: 0 auto 1rem auto;
+    text-align: center;
+  }

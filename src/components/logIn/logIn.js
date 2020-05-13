@@ -20,7 +20,8 @@ class Login extends React.Component {
       registerUser: false,
       registerMerchant: false,
       auth: false,
-      type: 'user'
+      type: 'user',
+      guest: false
     }
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -77,7 +78,7 @@ class Login extends React.Component {
         .then(data => {
           console.log(data)
           if (status == 200) {
-            return this.setState({ user: data, auth: true })
+            return this.setState({ user: data, auth: true, guest: false })
           } else {
             this.setState({ loginVal: data.message })
           }
@@ -100,7 +101,7 @@ class Login extends React.Component {
       .then(data => {
         if (status == 200) {
           console.log(data)
-          return this.setState({ auth: true, user: data.user, type: data.user.type })
+          return this.setState({ auth: true, user: data.user, type: data.user.type, guest: data.guest})
         }
       })
       .catch(err => {
@@ -154,14 +155,14 @@ class Login extends React.Component {
     if (this.state.auth && this.state.type == 'user') {
       return (
         <div className="fullHeight">
-          <Home logout={this.logout}/>
+          <Home logout={this.logout} guest={this.state.guest} email={this.state.user.email}/>
         </div>
       )
 
     } else if (this.state.auth && this.state.type == 'merchant') {
       return (
         <div className="fullHeight">
-          <MerchantHome logout={this.logout}/>
+          <MerchantHome logout={this.logout} email={this.state.user.email}/>
         </div>
       )
 
