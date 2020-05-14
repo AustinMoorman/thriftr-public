@@ -66,7 +66,7 @@ const createGuest = async (req, res, next) => {
                 data: { id: response._id, email: response.email, type: 'user' }
             }, process.env.REACT_APP_JWT_SECRET);
             const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "none" }
-            res.cookie('JWT', accessToken, cookieOptions).json({ user: { id: response._id, email: response.email, type: 'guest' } })
+            res.cookie('JWT', accessToken, cookieOptions).json({ user:{ id: response._id, email: response.email, type: 'user'},guest: true })
             loginTimeStamp(response._id, 'user')
         }
     })

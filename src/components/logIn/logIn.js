@@ -76,7 +76,6 @@ class Login extends React.Component {
           return res.json()
         })
         .then(data => {
-          console.log(data)
           if (status == 200) {
             return this.setState({ user: data, auth: true, guest: false })
           } else {
@@ -101,6 +100,7 @@ class Login extends React.Component {
       .then(data => {
         if (status == 200) {
           console.log(data)
+
           return this.setState({ auth: true, user: data.user, type: data.user.type, guest: data.guest})
         }
       })
@@ -126,9 +126,8 @@ class Login extends React.Component {
             type: 'user'
           })
 
-        } else {
-          console.log('error')
         }
+        
       })
   }
   regUser() {
