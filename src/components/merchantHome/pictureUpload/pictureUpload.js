@@ -93,7 +93,7 @@ class PictureUpload extends React.Component {
 
 
     imageDisplay() {
-        const img = this.state.allImages.reverse()
+        const img = this.state.allImages
         return img.map(element => {
             let imgClass = 'unselected'
             if (this.state.selectedImages.find(img => img == element)) {
@@ -127,13 +127,7 @@ class PictureUpload extends React.Component {
         }
         this.setState({ selectedImages: selectedImgs, noSelectedImage: '' })
     }
-    displaySelecetedImages() {
-        const img = this.state.selectedImages
-        return img.map(element => {
-            return <img style={{ width: '200px', height: '200px' }} src={element} name={element}></img>
-        })
 
-    }
     onBack() {
         const images = this.state.selectedImages
         if (images.length == 0) {
@@ -168,7 +162,7 @@ class PictureUpload extends React.Component {
                 </div>
                 <h2> all photos</h2>
                 <p>{this.state.imageLimit}</p>
-                <div className="uploaderImagegrid">
+                <div className="uploaderImagegridBottom">
                     {this.imageDisplay()}
                 </div>
 

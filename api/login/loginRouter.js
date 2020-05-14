@@ -65,7 +65,7 @@ const createGuest = async (req, res, next) => {
                 expiresIn: "365 days",
                 data: { id: response._id, email: response.email, type: 'user' }
             }, process.env.REACT_APP_JWT_SECRET);
-            const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "none" }
+            const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "strict" }
             res.cookie('JWT', accessToken, cookieOptions).json({ user:{ id: response._id, email: response.email, type: 'user'},guest: true })
             loginTimeStamp(response._id, 'user')
         }
@@ -78,7 +78,7 @@ loginRouter.post('/', authenticate, (req, res, next) => {
         expiresIn: "365 days",
         data: { id: req.user.id, email: req.user.email, type: req.type }
     }, process.env.REACT_APP_JWT_SECRET);
-    const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "none" }
+    const cookieOptions = { httpOnly: true, expires: new Date(Date.now() + 24 * 365 * 1000 * 3600000), sameSite: "strict" }
     res.cookie('JWT', accessToken, cookieOptions).json({ id: req.user.id, email: req.user.email, type: req.type })
     loginTimeStamp(req.user.id, req.type).status(200);
 });

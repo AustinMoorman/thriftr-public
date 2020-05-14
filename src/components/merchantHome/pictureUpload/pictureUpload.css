@@ -34,6 +34,14 @@ fill: #3d3d3f;
     justify-content: center;
     align-items: center;
 }
+.uploaderImagegridBottom{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+}
 .uploaderImageContainer{
     width: 46vw;
     max-width: 376px;
