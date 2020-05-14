@@ -20,6 +20,22 @@ class OfferMap extends React.Component {
   }
 
   render() {
+    if (!this.props.currentLocation) {
+      return (
+        <Map google={this.props.google}
+          initialCenter={{ lat: this.props.offerLocation.coordinates[1], lng: this.props.offerLocation.coordinates[0] }} zoom={12} scrollwheel={false} scaleControl={false} streetViewControl={false} panControl={false} rotateControl={false} fullscreenControl={false}
+          Style={{
+            width: "100vw",
+            maxWidth: "800px",
+            height: "75vw",
+            maxHeight: "600px",
+          }}>
+          <Marker position={{ lat: this.props.offerLocation.coordinates[1], lng: this.props.offerLocation.coordinates[0] }} />
+
+        </Map>
+      )
+
+    }
     if (this.props.offerLocation.coordinates.length) {
       return (
         <Map google={this.props.google}
@@ -38,7 +54,7 @@ class OfferMap extends React.Component {
     } else {
       return (
         <Map google={this.props.google}
-          initialCenter={{ lat: this.props.currentLocation.latitude, lng: this.props.currentLocation.longitude }} zoom={12} scrollwheel={false}  scaleControl={false} streetViewControl={false} panControl={false} rotateControl={false} fullscreenControl={false}
+          initialCenter={{ lat: this.props.currentLocation.latitude, lng: this.props.currentLocation.longitude }} zoom={12} scrollwheel={false} scaleControl={false} streetViewControl={false} panControl={false} rotateControl={false} fullscreenControl={false}
           Style={{
             width: "100vw",
             maxWidth: "800px",

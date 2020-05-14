@@ -72,6 +72,22 @@ merchantRouter.get('/start-offer', (req, res, next) => {
 
 merchantRouter.post('/add-offer', (req, res, next) => {
     let offer = req.body.offer;
+    if (offer._id) {
+        Offer.updateOne({ _id: offer._id },{
+            details: offer.details,
+            deal: offer.deal,
+            images: offer.images,
+            tags: offer.tags,
+            category: offer.category,
+            startDate: offer.startDate,
+            endDate: offer.endDate
+        },(err, response) => {
+            if(err){
+                return next(err)
+            }
+            res.status(200).send()
+        })
+    }
     Offer({
         name: offer.name,
         formattedAddress: offer.formattedAddress,
@@ -85,10 +101,34 @@ merchantRouter.post('/add-offer', (req, res, next) => {
         startDate: offer.startDate,
         endDate: offer.endDate
     }).save((err, response) => {
-        if(err){
+        if (err) {
             return next(err)
         }
         res.status(200).send()
+    })
+})
+
+
+merchantRouter.delete('/delete-image', (req, res, next) => {
+    const deleteImg = req.body.img.toString()
+    console.log(deleteImg)
+    Merchant.updateOne({ _id: req.user.id }, { $pull: { images: deleteImg } }, (err) => {
+        if (err) {
+            next(err)
+        } else {
+            res.sendStatus(200)
+        }
+    })
+})
+
+merchantRouter.get('/offers', (req, res, next) => {
+    let offerList;
+    Offer.find({ merchantId: req.user.id }, (err, response) => {
+        if (err) {
+            return next(err)
+        }
+        offerList = response || []
+        res.status(200).json({ offerList: offerList })
     })
 })
 

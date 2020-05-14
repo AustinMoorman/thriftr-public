@@ -31,24 +31,23 @@ class Home extends React.Component {
     console.log('onback')
     this.setState({ category: null });
   }
-  searchParams(currentLocation, radius,reset) {
+  searchParams(currentLocation, radius, reset) {
     let status;
     const endSlide = {
       name: "that's it for now",
-      details: "try changing up your search to something different",
+      details: "try changing your search to something different",
       images: [],
       location: {
         coordinates: []
       }
-
     }
-    if(reset){
-      this.setState({offerList:[], noMoreOffers:false})
+    if (reset) {
+      this.setState({ offerList: [], noMoreOffers: false })
     }
     this.setState({ currentLocation: currentLocation, radius: radius }, () => {
       if (!this.state.noMoreOffers) {
         fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers`,
-          { method: 'POST', mode: 'cors', credentials: 'include', body: JSON.stringify({ longitude: currentLocation.longitude, latitude: currentLocation.latitude, radius: radius, category: this.state.category,currentList:  this.state.offerList}), headers: { 'Content-Type': 'application/json' } })
+          { method: 'POST', mode: 'cors', credentials: 'include', body: JSON.stringify({ longitude: currentLocation.longitude, latitude: currentLocation.latitude, radius: radius, category: this.state.category, currentList: this.state.offerList }), headers: { 'Content-Type': 'application/json' } })
           .then(res => {
             status = res.status
             if (status == 404) {
@@ -57,31 +56,28 @@ class Home extends React.Component {
               return this.setState({ noMoreOffers: true, offerList: currentOfferList })
             }
             if (status !== 200) {
-              return this.setState({ error: 'there was an error',offerList:[endSlide] })
+              return this.setState({ error: 'there was an error', offerList: [endSlide] })
             }
             return res.json()
           })
           .then(data => {
             if (status == 200) {
               let currentOffer = this.state.offerList
-              if(data.offerList.length < 5){
-
-                this.setState({ offerList: currentOffer.concat(data.offerList,[endSlide]),noMoreOffers: true })
-
-              }else{
+              if (data.offerList.length < 5) {
+                this.setState({ offerList: currentOffer.concat(data.offerList, [endSlide]), noMoreOffers: true })
+              } else {
                 this.setState({ offerList: currentOffer.concat(data.offerList) })
               }
-              
             }
           })
       }
     })
   }
   userInfo() {
-    if(this.props.guest){
+    if (this.props.guest) {
       return <p className="userInfo">you are currently using a guest account. for a better user experience please logout and create a new account</p>
     }
-    else{
+    else {
       return <p className="userInfo">you are currently signed in under {this.props.email}</p>
     }
   }

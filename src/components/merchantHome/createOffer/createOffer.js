@@ -39,7 +39,7 @@ class CreateOffer extends React.Component {
         this.updateTags = this.updateTags.bind(this);
         this.handleTime = this.handleTime.bind(this);
         this.enableDate = this.enableDate.bind(this);
-        this.getBio = this.getBio.bind(this);
+        this.getIt = this.getIt.bind(this);
         this.addCategory = this.addCategory.bind(this);
         this.categoryCheck = this.categoryCheck.bind(this);
         this.addressFormatter = this.addressFormatter.bind(this);
@@ -173,34 +173,39 @@ class CreateOffer extends React.Component {
 
 
 
-    getBio() {
-        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/start-offer`,
-            { method: 'GET', mode: 'cors', credentials: 'include' })
-            .then(res => {
-                if (res.status != 200) {
-                    return;
-                }
-                return res.json()
-            })
-            .then(data => {
-                console.log(data.formattedAddress)
-                this.setState({
-                    offer: {
-                        name: data.name,
-                        formattedAddress: data.formattedAddress,
-                        details: '',
-                        deal: '',
-                        images: [],
-                        location: data.location,
-                        tags: data.tags,
-                        category: data.category,
-                        merchantId: data.merchantId,
-                        startDate: '',
-                        endDate: ''
+    getIt() {
+        if (this.props.editOffer == true) {
+            this.setState({ offer: this.props.offer })
+        } else {
+            fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/start-offer`,
+                { method: 'GET', mode: 'cors', credentials: 'include' })
+                .then(res => {
+                    if (res.status != 200) {
+                        return;
                     }
-
+                    return res.json()
                 })
-            })
+                .then(data => {
+                    console.log(data.formattedAddress)
+                    this.setState({
+                        offer: {
+                            name: data.name,
+                            formattedAddress: data.formattedAddress,
+                            details: '',
+                            deal: '',
+                            images: [],
+                            location: data.location,
+                            tags: data.tags,
+                            category: data.category,
+                            merchantId: data.merchantId,
+                            startDate: '',
+                            endDate: ''
+                        }
+
+                    })
+                })
+        }
+
 
     }
 
@@ -281,7 +286,7 @@ class CreateOffer extends React.Component {
                                     </div>
                                     <div className="backNPublish">
                                         <p className="val">{this.state.publishVal}</p>
-                                        <button onClick={this.handlePublish}>Publish</button>
+                                        <button onClick={this.handlePublish}>{`save & publish`}</button>
                                         <p className="val">{this.state.backMessage}</p>
                                         <button onClick={this.handleBack}>{this.state.backText}</button>
                                     </div>
@@ -289,13 +294,6 @@ class CreateOffer extends React.Component {
                                 </div>
                             </div>
                         </div >
-
-
-
-
-
-
-
                     )
                 case 'changeImg':
                     return (
@@ -305,7 +303,7 @@ class CreateOffer extends React.Component {
                     )
             }
         } else {
-            this.getBio()
+            this.getIt()
             return (
                 <div>
                 </div>

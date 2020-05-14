@@ -133,7 +133,7 @@ class EditBio extends React.Component {
         }
     }
     componentDidMount() {
-        this.getBio()
+        
     }
 
     render() {
@@ -210,6 +210,7 @@ class EditBio extends React.Component {
                     )
             }
         } else {
+            this.getBio()
             return (
                 <div>
                     loading

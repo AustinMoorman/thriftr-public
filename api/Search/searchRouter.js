@@ -54,8 +54,16 @@ searchRouter.post('/get-offers', (req, res, next) => {
     const longitude = Number(req.body.longitude)
     const radius = Number(req.body.radius)
     const category = req.body.category
-    const currentList = req.body.currentList
+
+    let currentList = req.body.currentList
+
+    currentList = currentList.map(offer => {
+        return offer._id
+    })
+    console.log(currentList)
+
     let recentPastviews;
+    let allViews
     let favoritedTags;
     let favoritedMerchant;
     let offerList;
@@ -66,8 +74,6 @@ searchRouter.post('/get-offers', (req, res, next) => {
     const score = (off, favTags, favMerchant) => {
         const tags = off.tags
         if (favTags.length && tags.length) {
-            console.log(favTags)
-            console.log(tags)
             let total = favTags.map(userTag => {
                 let val = 0;
                 tags.forEach(offerTag => {
@@ -85,7 +91,6 @@ searchRouter.post('/get-offers', (req, res, next) => {
         } else {
             return 0
         }
-
     }
 
     if (latitude && longitude && radius && category) {
@@ -94,15 +99,16 @@ searchRouter.post('/get-offers', (req, res, next) => {
                 return next(err)
             }
             recentPastviews = response.pastViews || []
-            if (recentPastviews) {
-                recentPastviews = recentPastviews.filter(offer => {
-                    return offer.timeStamp > recentViewFrame
-                })
-
-                recentPastviews = recentPastviews.map(offer => {
-                    return offer.offerId
-                })
-            }
+            recentPastviews = recentPastviews.filter(offer => {
+                return offer.timeStamp > recentViewFrame
+            }) || []
+            
+            recentPastviews = recentPastviews.map(offer => {
+                return offer.offerId
+            })
+            console.log(recentPastviews)
+            allViews = recentPastviews.concat(currentList)
+            console.log(allViews)
 
             favoritedTags = response.favoritedTags
             favoritedMerchant = response.favoritedMerchant
@@ -114,24 +120,22 @@ searchRouter.post('/get-offers', (req, res, next) => {
                 if (!response) {
                     return;
                 }
-                offerList = response
+                offerList = response || []
                 offerList = offerList.filter(offer => {
-                    return !recentPastviews.includes(offer._id)
-                })
-                if(offerList.length){
-                     offerList = offerList.filter(offer => {
-                    return !currentList.includes(offer._id)
-                })
-                }
-                if(offerList.length){
-                       offerList.forEach((offer, index) => {
-                    offerList[index].score = score(offer, favoritedTags, favoritedMerchant)
-                })
-                offerList.sort((a, b) => {
-                    return b.score - a.score
-                })
+                    return !allViews.includes(offer._id)
+                }) || []
+                if (offerList.length) {
+                    offerList.forEach((offer, index) => {
+                        offerList[index].score = score(offer, favoritedTags, favoritedMerchant)
+                    })
+                    offerList.sort((a, b) => {
+                        return b.score - a.score
+                    })
                 }
             }).then(function () {
+                if(!offerList){
+                    offerList = []
+                }
                 if (offerList.length < resAmount) {
                     return MerchantBio.find({ category: category, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
                         if (err) {
@@ -142,19 +146,19 @@ searchRouter.post('/get-offers', (req, res, next) => {
                         }
                         bioList = response
                         bioList = bioList.filter(bio => {
-                            return !recentPastviews.includes(bio._id)
-                        })
+                            return !allViews.includes(bio._id)
+                        }) || []
                         bioList.forEach((bio, index) => {
                             bioList[index].score = score(bio, favoritedTags, favoritedMerchant)
-                        })
+                        }) || []
                         bioList.sort((a, b) => {
                             return b.score - a.score
                         })
                         let bioNum = resAmount - offerList.length
                         let listToSend = offerList.concat(bioList.splice(0, bioNum))
-                        if(listToSend.length){
+                        if (listToSend.length) {
                             res.json({ offerList: listToSend })
-                        }else{
+                        } else {
                             res.sendStatus(404);
                         }
                     })

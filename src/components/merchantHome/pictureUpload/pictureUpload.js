@@ -20,10 +20,13 @@ class PictureUpload extends React.Component {
         this.getAllimages = this.getAllimages.bind(this);
         this.imgClick = this.imgClick.bind(this);
         this.onBack = this.onBack.bind(this);
+        this.deleteImg = this.deleteImg.bind(this)
     }
     fileSelectedHandler(event) {
         this.setState({
             selectedFile: event.target.files[0]
+        }, () => {
+            this.fileUploadHandler()
         })
     }
 
@@ -57,7 +60,6 @@ class PictureUpload extends React.Component {
                             })
                         newUrl = url;
                         addNewImg();
-
                     })
                 })
             const updateProgress = (percentage) => {
@@ -66,7 +68,7 @@ class PictureUpload extends React.Component {
             const addNewImg = () => {
                 let allImg = this.state.allImages
                 allImg.push(newUrl)
-                this.setState({ allImages: allImg })
+                this.setState({ allImages: allImg, selectedFile: '' })
             }
 
 
@@ -89,6 +91,22 @@ class PictureUpload extends React.Component {
             })
 
     }
+    deleteImg(event) {
+        const imgDelete = event.target.name
+        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/delete-image`,
+        { method: 'DELETE', mode: 'cors', body: JSON.stringify({ img: imgDelete}), headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
+            .then(res => {
+                if (res.status != 200) {
+                    return;
+                }else{
+                    let allImg = this.state.allImages
+                    allImg = allImg.filter(img => {
+                        return img != imgDelete
+                    })
+                    this.setState({allImages: allImg})
+                }
+            })
+    }
 
 
 
@@ -100,6 +118,7 @@ class PictureUpload extends React.Component {
                 imgClass = 'selectedBelow'
             }
             return <div className="uploaderImageContainer">
+                <button className="deleteImg" onClick={this.deleteImg} name={element} >x</button>
                 <img className={imgClass} src={element} name={element} onClick={this.imgClick}></img>
             </div>
         })
@@ -170,7 +189,6 @@ class PictureUpload extends React.Component {
                     <h2>upload new photo</h2>
                     <progress value={this.state.downloadProgress} max="1"></progress>
                     <input type="file" className="fileSelecter" onChange={this.fileSelectedHandler} />
-                    <button onClick={this.fileUploadHandler} >upload image</button>
                 </div>
             </div>
         )

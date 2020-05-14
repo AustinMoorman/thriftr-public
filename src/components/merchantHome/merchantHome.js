@@ -46,15 +46,8 @@ class MerchantHome extends React.Component {
                             <div>
                                 <button onClick={this.handleClick} name="create offer">create offer</button>
                             </div>
-                            ▼ ▼ ▼ under contruction ▼ ▼ ▼
                             <div>
-                                <button onClick={this.handleClick} name="current offers">current offers</button>
-                            </div>
-                            <div>
-                                <button onClick={this.handleClick} name="past offers">past offers</button>
-                            </div>
-                            <div>
-                                <button onClick={this.handleClick} name="analytics">analytics</button>
+                                <button onClick={this.handleClick} name="view offers">view offers</button>
                             </div>
                             <div>
                                 <button id="logOut" name="logout" onClick={this.props.logout}>logout or create new account</button>
@@ -73,19 +66,13 @@ class MerchantHome extends React.Component {
             case 'create offer':
                 return (
                     <div className="fullHeight">
-                        <CreateOffer onBack={this.onBack} />
+                        <CreateOffer onBack={this.onBack} editOffer={false} />
                     </div>
                 )
-            case 'current offers':
+            case 'view offers':
                 return (
                     <div className="fullHeight">
-                        current offers
-                    </div>
-                )
-            case 'past offers':
-                return (
-                    <div className="fullHeight">
-                        past offers
+                        <ViewOffers onBack={this.onBack} />
                     </div>
                 )
 
