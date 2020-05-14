@@ -1,0 +1,10 @@
+.noImage {
+    margin: 4rem
+}
+.noImage h1 {
+    font-size: 1.5rem;
+    padding: 0.15rem 0.25rem;
+    color: #808080;
+    font-weight: 500;
+    margin: 0 auto;
+}
