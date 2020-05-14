@@ -54,12 +54,14 @@ searchRouter.post('/get-offers', (req, res, next) => {
     const longitude = Number(req.body.longitude)
     const radius = Number(req.body.radius)
     const category = req.body.category
+    const currentList = req.body.currentList
     let recentPastviews;
     let favoritedTags;
     let favoritedMerchant;
     let offerList;
     let bioList;
     let listToSend;
+
 
     const score = (off, favTags, favMerchant) => {
         const tags = off.tags
@@ -116,6 +118,11 @@ searchRouter.post('/get-offers', (req, res, next) => {
                 offerList = offerList.filter(offer => {
                     return !recentPastviews.includes(offer._id)
                 })
+                if(offerList.length){
+                     offerList = offerList.filter(offer => {
+                    return !currentList.includes(offer._id)
+                })
+                }
                 if(offerList.length){
                        offerList.forEach((offer, index) => {
                     offerList[index].score = score(offer, favoritedTags, favoritedMerchant)

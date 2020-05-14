@@ -48,7 +48,7 @@ class Home extends React.Component {
     this.setState({ currentLocation: currentLocation, radius: radius }, () => {
       if (!this.state.noMoreOffers) {
         fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/search/get-offers`,
-          { method: 'POST', mode: 'cors', credentials: 'include', body: JSON.stringify({ longitude: currentLocation.longitude, latitude: currentLocation.latitude, radius: radius, category: this.state.category }), headers: { 'Content-Type': 'application/json' } })
+          { method: 'POST', mode: 'cors', credentials: 'include', body: JSON.stringify({ longitude: currentLocation.longitude, latitude: currentLocation.latitude, radius: radius, category: this.state.category,currentList:  this.state.offerList}), headers: { 'Content-Type': 'application/json' } })
           .then(res => {
             status = res.status
             if (status == 404) {
