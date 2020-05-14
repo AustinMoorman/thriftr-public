@@ -144,7 +144,7 @@ class Login extends React.Component {
     }
   }
   loginReturn() {
-    this.setState({login: true, registerUser: false, registerMerchant: false,})
+    this.setState({login: true, registerUser: false, registerMerchant: false, type: 'user'})
   }
   componentDidMount() {
     this.checkLogin()

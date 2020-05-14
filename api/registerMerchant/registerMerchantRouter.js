@@ -45,6 +45,7 @@ registerMerchantRouter.post('/', async (req, res, next) => {
                         } else {
                             const hashedPwd = await bcrypt.hash(newMerchant.password, 10);
                             newMerchant.password = hashedPwd;
+                            newMerchant.email = newMerchant.email.toLowerCase();
                             await Merchant({
                                 name: newMerchant.name,
                                 googleId: newMerchant.place.googleId,

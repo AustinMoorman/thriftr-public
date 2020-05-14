@@ -18,6 +18,7 @@ registerRouter.post('/', async (req,res,next) => {
             }else{
                 const hashedPwd = await bcrypt.hash(newUser.password, 10);
                 newUser.password = hashedPwd;
+                newUser.email = newUser.email.toLowerCase();
                 await User(newUser).save((err, response) => {
                     if(err){
                     return next(err);
