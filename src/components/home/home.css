@@ -4,6 +4,8 @@
     flex-direction: column;
     align-items: center;
     color: #3d3d3f;
+    max-width: 800px;
+    margin: 0 auto;
   }
   #home .head {
     margin-bottom: 2rem;
@@ -22,21 +24,20 @@
 
 }
 .homeOptions button {
-    width: 80%;
-    max-width: 800px;
-    height: 60%;
+    width: 75%;
+  
     padding: auto 1rem;
     border: 0.3rem solid #E0E0E0;
     border-radius: 0.5rem;
     box-sizing: border-box;
     color: #3d3d3f;
     transition: all 0.15s;
-    margin: 0 auto;
+    margin: 0.25rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
   .homeOptions button:hover {
     border-color: #7dce94;
@@ -48,12 +49,16 @@
   }
 
   #logOut {
-    padding: 0;
+    padding: 0.5rem;
     font-size: 1rem;
     font-weight: 500;
 
   }
+  
   .userInfo {
     margin: 0 auto 1rem auto;
     text-align: center;
+    font-size: 0.75rem;
+    width: 75%;
   }
+  

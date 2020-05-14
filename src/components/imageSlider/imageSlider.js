@@ -22,6 +22,13 @@ class ImageSlider extends React.Component {
     }
 
     render() {
+        if(!this.props.images.length){
+            return (
+                <div className='noImage'>
+                    <h1>no images selected</h1>
+                </div>
+            )
+        }
         if(this.props.map){
                   return (
             <SwipeableViews 

@@ -15,7 +15,7 @@
 
 }
 #login .head {
-  margin: 0.5rem 0 3rem 0;
+  margin: 0.5rem 0 ;
 }
 
 .green {
@@ -24,6 +24,7 @@
 
 .merchantLoginIndicator {
   font-size: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 .loginInputs input {
