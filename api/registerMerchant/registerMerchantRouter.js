@@ -40,7 +40,6 @@ registerMerchantRouter.post('/', async (req, res, next) => {
                         return next(err);
                     } else {
                         if (response) {
-
                             res.status(304).send('email already taken')
                         } else {
                             const hashedPwd = await bcrypt.hash(newMerchant.password, 10);
