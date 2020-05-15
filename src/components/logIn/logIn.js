@@ -99,8 +99,6 @@ class Login extends React.Component {
       })
       .then(data => {
         if (status == 200) {
-          console.log(data)
-
           return this.setState({ auth: true, user: data.user, type: data.user.type, guest: data.guest})
         }
       })

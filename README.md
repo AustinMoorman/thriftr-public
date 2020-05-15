@@ -53,8 +53,6 @@ Function receives the offer to score, array of favoritedTags and favorited Merch
     const score = (off, favTags, favMerchant) => {
         const tags = off.tags
         if (favTags.length && tags.length) {
-            console.log(favTags)
-            console.log(tags)
             let total = favTags.map(userTag => {
                 let val = 0;
                 tags.forEach(offerTag => {
@@ -148,7 +146,6 @@ The route below is used to create a new merchant account and it's bio. This veri
 
     registerMerchantRouter.post('/', async (req, res, next) => {
         let newMerchant = req.body;
-        console.log(newMerchant)
         await Merchant.findOne({ googleId: newMerchant.place.googleId }, async (err, response) => {
             if (err) {
                 return next(err)
@@ -161,7 +158,6 @@ The route below is used to create a new merchant account and it's bio. This veri
                             return next(err);
                         } else {
                             if (response) {
-                                console.log(2)
                                 res.status(304).send('email already taken')
                             } else {
                                 const hashedPwd = await bcrypt.hash(newMerchant.password, 10);

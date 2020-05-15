@@ -60,8 +60,6 @@ searchRouter.post('/get-offers', (req, res, next) => {
     currentList = currentList.map(offer => {
         return offer._id
     })
-    console.log(currentList)
-
     let recentPastviews;
     let allViews
     let favoritedTags;
@@ -106,9 +104,7 @@ searchRouter.post('/get-offers', (req, res, next) => {
             recentPastviews = recentPastviews.map(offer => {
                 return offer.offerId
             })
-            console.log(recentPastviews)
             allViews = recentPastviews.concat(currentList)
-            console.log(allViews)
 
             favoritedTags = response.favoritedTags
             favoritedMerchant = response.favoritedMerchant

@@ -7,7 +7,6 @@ import Login from '../logIn/logIn';
 import firebase from "firebase/app";
 import "firebase/storage";
 
-console.log()
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
   authDomain: "thriftr.firebaseapp.com",

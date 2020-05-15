@@ -113,7 +113,6 @@ merchantRouter.post('/add-offer', (req, res, next) => {
 
 merchantRouter.delete('/delete-image', (req, res, next) => {
     const deleteImg = req.body.img.toString()
-    console.log(deleteImg)
     Merchant.updateOne({ _id: req.user.id }, { $pull: { images: deleteImg } }, (err) => {
         if (err) {
             next(err)

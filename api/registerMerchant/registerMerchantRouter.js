@@ -27,7 +27,7 @@ registerMerchantRouter.post('/verify-id', async (req, res, next) => {
 
 registerMerchantRouter.post('/', async (req, res, next) => {
     let newMerchant = req.body;
-    console.log(newMerchant)
+
     await Merchant.findOne({ googleId: newMerchant.place.googleId }, async (err, response) => {
         if (err) {
             return next(err)
@@ -40,7 +40,7 @@ registerMerchantRouter.post('/', async (req, res, next) => {
                         return next(err);
                     } else {
                         if (response) {
-                            console.log(2)
+
                             res.status(304).send('email already taken')
                         } else {
                             const hashedPwd = await bcrypt.hash(newMerchant.password, 10);

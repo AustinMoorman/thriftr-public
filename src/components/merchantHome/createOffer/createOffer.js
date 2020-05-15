@@ -107,7 +107,6 @@ class CreateOffer extends React.Component {
         const startDate = this.state.offer.startDate || Date.now()
         const now = Date.now()
         const endDate = this.state.offer.endDate || 253402300000000
-        console.log(`${startDate} ---- ${endDate} ----- ${now}`)
 
         if (startDate > endDate) {
             this.setState({ dateVal: "please provide a valid date range" })
@@ -186,7 +185,6 @@ class CreateOffer extends React.Component {
                     return res.json()
                 })
                 .then(data => {
-                    console.log(data.formattedAddress)
                     this.setState({
                         offer: {
                             name: data.name,

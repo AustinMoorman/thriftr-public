@@ -28,7 +28,6 @@ class Home extends React.Component {
     this.setState({ category: event.target.name })
   }
   onBack() {
-    console.log('onback')
     this.setState({ category: null });
   }
   searchParams(currentLocation, radius, reset) {

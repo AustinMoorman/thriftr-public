@@ -82,7 +82,6 @@ class RegisterMerchant extends React.Component {
                 email: this.state.email.text,
                 password: this.state.password.text
             }
-            console.log(body)
             fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/register-merchant`,
                 { method: 'POST', body: JSON.stringify(body), mode: 'cors', headers: { 'Content-Type': 'application/json' } })
                 .then(res => {

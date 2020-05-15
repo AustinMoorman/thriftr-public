@@ -88,7 +88,6 @@ class Refine extends React.Component {
 
   }
   collapse() {
-    console.log('collapse')
     if (this.state.currentCord.latitude !== 39.8283 && this.state.currentCord.longitude !== -98.5795 ) {
       this.props.searchParams(this.state.currentCord, this.state.radius, true);
     }

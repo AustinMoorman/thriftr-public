@@ -60,7 +60,6 @@ class Register extends React.Component {
         if (this.state.password.val || this.state.email.val || this.state.repassword.val || this.state.name.val) {
             this.setState({ registerVal: "please fix the above requirments" })
         } else {
-            console.log('register')
             request.post(`${process.env.REACT_APP_EXPRESS_URL}/api/register`, { body: newUser, json: true }, (err, res, body) => {
                 if (res.statusCode == 201) {
                     this.setState({
