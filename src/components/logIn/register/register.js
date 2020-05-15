@@ -1,6 +1,5 @@
 import React from 'react';
 import './register.css';
-const request = require('request');
 
 class Register extends React.Component {
     constructor(props) {
@@ -60,8 +59,10 @@ class Register extends React.Component {
         if (this.state.password.val || this.state.email.val || this.state.repassword.val || this.state.name.val) {
             this.setState({ registerVal: "please fix the above requirments" })
         } else {
-            request.post(`${process.env.REACT_APP_EXPRESS_URL}/api/register`, { body: newUser, json: true }, (err, res, body) => {
-                if (res.statusCode == 201) {
+            fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/register`,
+            {method: 'POST', body: JSON.stringify({newUser: newUser}), mode: 'cors', headers: { 'Content-Type': 'application/json' }})
+            .then( response => {
+                if (response.status == 201) {
                     this.setState({
                         name: { text: '', val: '' },
                         email: { text: '', val: '' },
@@ -69,7 +70,7 @@ class Register extends React.Component {
                         repassword: { text: '', val: '' },
                         registerVal: 'registration successful'
                     })
-                } else if (res.statusCode == 304) {
+                } else if (response.status == 304) {
                     this.setState({ registerVal: 'email is already taken please login' })
                 }
             })

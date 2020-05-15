@@ -3,18 +3,18 @@
 
 ---
 
-##Project's Aim
+## Project's Aim
 
-###User Side
-Create a fun and easy to use web app to help people find their next bar, the perfect resturant, or some fun weekend entertainment.
+### User Side
+Create a fun and easy to use web app to help people find their next bar, the perfect restaurant, or some fun weekend entertainment.
 
 
-###Merchant Side
+### Merchant Side
 Have a quick way to gain new business with easy to use interface that anyone from that night's bartender to the marketing team can use
 
 ---
 
-##Technologies
+## Technologies
 - Node- package manager
 - React - Frontend
 - Express - Backend
@@ -25,29 +25,37 @@ Have a quick way to gain new business with easy to use interface that anyone fro
 
 ---
 
-##Scope of Functionality
+## APIs
 
-###User
+- Google Maps
+- Google AutoComplete
+- Google Places
+
+---
+
+## Scope of Functionality
+
+### User
 - Create new account or use guest account
 - Both actual user accounts and guest accounts are stored as a cookie to ///login information
-- Pick from three different categories bar,resturant or entertainment.
+- Pick from three different categories: bar,restaurant or entertainment.
 - Filter search by radius and use Geolocation to get current location or enter zipcode.
 - Offers are returned to the user in an easy to view/swipeable list.
 - Users are able to like/heart offers then offers that closely match that offer will appear more frequently.
 
-###Merchant
-- Create new account with the help of Google autofil
+### Merchant
+- Create new account with the help of Google autofill
 - Uses Google place id to avoid duplicate accounts
 - Merchants can create a bio that users can view anytime even when no ads are running
-- Merchants can create offers that get priority when a user searches in their catagory.
-- Both the bio and offers gave tag functionality that the backend uses to learn what user likes and show similar offers. 
-- Images are stored in thriftr's database so Merchants can reuse as they please.
+- Merchants can create offers that get priority when a user searches in their category.
+- Both the bio and offers are given tag functionality that the backend uses to learn what the user likes and show similar offers. 
+- Images are stored in thriftr's database so the merchant can reuse as they please.
 
 ---
 
-##Examples
+## Examples
 
-###Backend Offer Scoring Functionality
+### Backend Offer Scoring Functionality
 Function receives the offer to score, array of favoritedTags and favorited Merchants from the user. Then, returns a score for that offer based on how many favorited tags match and if that merchant has ever been favorited by the user.
 
     const score = (off, favTags, favMerchant) => {
@@ -72,9 +80,9 @@ Function receives the offer to score, array of favoritedTags and favorited Merch
         }
     }
 
-###Client side API New Offers Function
+### Client side API New Offers Function
 
-Before fetching more offers from the back end the front compiles the search parameters, takes into account if the search parameters have been changed(*reset = true) so this can be used for the inital search and to grab more offers since the back end only returns 5 at a time.
+Before fetching more offers from the back end the front compiles the search parameters, takes into account if the search parameters have been changed(*reset = true) so this can be used for the initial search and to grab more offers since the back end only returns 5 at a time.
 
     searchParams(currentLocation, radius, reset) {
         let status;
@@ -119,9 +127,9 @@ Before fetching more offers from the back end the front compiles the search para
         })
     }
 
-###Express Router for Verifying Merchants
+### Express Router for Verifying Merchants
 
-Verify-Id is used to check whether or not a account is in place at that address to avoid dupliate accounts.
+Verify-Id is used to check whether or not an account is in place at that address to avoid duplicate accounts.
 
     registerMerchantRouter.post('/verify-id', async (req, res, next) => {
         idToCheck = req.body.googleId;
@@ -197,9 +205,9 @@ The route below is used to create a new merchant account and it's bio. This veri
         })
     })
 
-###JTW Authentication Middleware
+### JTW Authentication Middleware
 
-All protected Express paths must go through this authentication middleware. This checks to make sure the user has the correct JWT token to access the following backs. The JWT token is stored as an HTTP only cookie and therefore sent with every resquest to Express.
+All protected Express paths must go through this authentication middleware. This checks to make sure the user has the correct JWT token to access the following backs. The JWT token is stored as an HTTP only cookie and therefore sent with every request to Express.
 
     const authenticateMiddleware = (req, res, next) => {
         const token = req.cookies.JWT

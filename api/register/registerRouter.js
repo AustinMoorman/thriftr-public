@@ -8,7 +8,8 @@ const User = require('../models/users');
 
 
 registerRouter.post('/', async (req,res,next) => {
-    let newUser = req.body;
+    let newUser = req.body.newUser;
+    newUser.email = newUser.email.toLowerCase();
     await User.findOne({email: newUser.email}, async (err,response) => {
         if(err){
             return next(err);
@@ -18,7 +19,6 @@ registerRouter.post('/', async (req,res,next) => {
             }else{
                 const hashedPwd = await bcrypt.hash(newUser.password, 10);
                 newUser.password = hashedPwd;
-                newUser.email = newUser.email.toLowerCase();
                 await User(newUser).save((err, response) => {
                     if(err){
                     return next(err);

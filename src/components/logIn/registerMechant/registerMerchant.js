@@ -2,7 +2,6 @@ import React from 'react';
 import './registerMerchant.css';
 import AutoComplete from 'react-google-autocomplete';
 import { get } from 'mongoose';
-const request = require('request');
 
 
 class RegisterMerchant extends React.Component {
