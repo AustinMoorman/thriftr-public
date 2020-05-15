@@ -4,6 +4,7 @@ import ImageSlider from '../../imageSlider/imageSlider'
 import OfferMap from '../../offersList/offers/offerMap/offerMap'
 import SlideableViews from 'react-swipeable-views'
 import CreateOffer from '../createOffer/createOffer'
+import { ReactComponent as Back } from './icon_back.svg'
 
 
 class ViewOffers extends React.Component {
@@ -22,10 +23,11 @@ class ViewOffers extends React.Component {
         this.getTimeLeft = this.getTimeLeft.bind(this);
         this.openEdit = this.openEdit.bind(this);
         this.changeIndex = this.changeIndex.bind(this);
+        this.deleteOffer = this.deleteOffer.bind(this);
     }
     changeIndex(index) {
-        this.setState({currentIndex: index})
-      }
+        this.setState({ currentIndex: index })
+    }
 
     getOffers() {
         fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/offers`,
@@ -106,19 +108,39 @@ class ViewOffers extends React.Component {
         })
     }
     openEdit() {
-        this.setState({offerToEdit: this.state.offerList[this.state.currentIndex], edit: true})
+        this.setState({ offerToEdit: this.state.offerList[this.state.currentIndex], edit: true })
+    }
+    deleteOffer() {
+        fetch(`${process.env.REACT_APP_EXPRESS_URL}/api/login/merchant/offer`,
+            { method: 'DELETE', mode: 'cors', body: JSON.stringify({ offerId: this.state.offerList[this.state.currentIndex]._id }), headers: { 'Content-Type': 'application/json' }, credentials: 'include' })
+            .then(res => {
+                if (res.status != 200) {
+                    return this.setState({ errorMessage: 'something unexpected happened', bio: { merchantId: false } })
+                } else {
+                    const currentOfferList = this.state.offerList;
+                    let index = this.state.currentIndex;
+                    currentOfferList.splice(index, 1)
+                    index--;
+                    this.setState({ offerList: currentOfferList, currentIndex: index })
+                }
+            })
+
     }
 
     render() {
-        if(this.state.edit){
+        if (this.state.edit) {
             return (
                 <div>
-                    <CreateOffer editOffer={true} onBack={this.props.onBack} offer={this.state.offerToEdit}/>
+                    <CreateOffer editOffer={true} onBack={this.props.onBack} offer={this.state.offerToEdit} />
                 </div>
             )
         }
         return (
             <div id="viewOffers">
+                <div className="head" >
+                    <button name="back" onClick={this.props.onBack}><Back className="backIcon" /></button>
+                    <h1>thrift<span className="green">r</span></h1>
+                </div>
                 <div className="notButtons">
                     <SlideableViews enableMouseEvents onChangeIndex={this.changeIndex} index={this.state.currentIndex} containerStyle={{
                         width: "100vw",
@@ -129,8 +151,9 @@ class ViewOffers extends React.Component {
                     </SlideableViews>
                 </div>
 
-                <div className="offerButtons">
+                <div className="viewOfferButtons">
                     <button onClick={this.openEdit}>edit offer</button>
+                    <button onClick={this.deleteOffer}>delete offer</button>
                 </div>
             </div>
         )

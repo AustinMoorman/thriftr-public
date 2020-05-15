@@ -73,7 +73,7 @@ merchantRouter.get('/start-offer', (req, res, next) => {
 merchantRouter.post('/add-offer', (req, res, next) => {
     let offer = req.body.offer;
     if (offer._id) {
-        Offer.updateOne({ _id: offer._id },{
+        Offer.updateOne({ _id: offer._id }, {
             details: offer.details,
             deal: offer.deal,
             images: offer.images,
@@ -81,31 +81,33 @@ merchantRouter.post('/add-offer', (req, res, next) => {
             category: offer.category,
             startDate: offer.startDate,
             endDate: offer.endDate
-        },(err, response) => {
-            if(err){
+        }, (err, response) => {
+            if (err) {
+                return next(err)
+            }
+            res.status(200).send()
+        })
+    } else {
+        Offer({
+            name: offer.name,
+            formattedAddress: offer.formattedAddress,
+            details: offer.details,
+            deal: offer.deal,
+            images: offer.images,
+            location: offer.location,
+            tags: offer.tags,
+            category: offer.category,
+            merchantId: req.user.id,
+            startDate: offer.startDate,
+            endDate: offer.endDate
+        }).save((err, response) => {
+            if (err) {
                 return next(err)
             }
             res.status(200).send()
         })
     }
-    Offer({
-        name: offer.name,
-        formattedAddress: offer.formattedAddress,
-        details: offer.details,
-        deal: offer.deal,
-        images: offer.images,
-        location: offer.location,
-        tags: offer.tags,
-        category: offer.category,
-        merchantId: req.user.id,
-        startDate: offer.startDate,
-        endDate: offer.endDate
-    }).save((err, response) => {
-        if (err) {
-            return next(err)
-        }
-        res.status(200).send()
-    })
+
 })
 
 
@@ -123,12 +125,21 @@ merchantRouter.delete('/delete-image', (req, res, next) => {
 
 merchantRouter.get('/offers', (req, res, next) => {
     let offerList;
-    Offer.find({ merchantId: req.user.id }, (err, response) => {
+    Offer.find({ merchantId: req.user.id, active: true}, (err, response) => {
         if (err) {
             return next(err)
         }
         offerList = response || []
         res.status(200).json({ offerList: offerList })
+    })
+})
+
+merchantRouter.delete('/offer', (req, res, next) => {
+    Offer.updateOne({ _id: req.body.offerId }, {active:false},(err,response) => {
+        if(err){
+            return next(err)
+        }
+        res.sendStatus(200)
     })
 })
 

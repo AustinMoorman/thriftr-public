@@ -1,5 +1,47 @@
 #viewOffers {
     margin: auto;
     max-width: 720px;
+    height: 100%;
+    display: flex;
+    align-content: space-between;
+    flex-direction: column;
 
 }
+#viewOffers .head {
+    width: 100vw;
+    max-width: 720px;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+#viewOffers .head h1 {
+    text-align: center;
+    flex-grow: 1;
+    font-size: 3rem;
+    position: relative;
+    left: -3rem;
+}
+#viewOffers.head button {
+    font-size: ;
+}
+
+
+
+
+
+.viewOfferButtons button {
+    margin: 0.5rem;
+    padding: 0.25rem 1rem;
+    border: 0.10rem solid #E0E0E0;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    color: #808080;
+    text-align: center;
+    transition: all 0.15s;
+    font-size: 1rem;
+  }
+  .viewOfferButtons {
+      display: flex;
+      justify-content: space-evenly;
+      margin-bottom: 0.5rem;
+  }

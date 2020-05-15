@@ -64,3 +64,26 @@
 [0514/164605.589:ERROR:crash_report_database_win.cc(428)] unexpected header
 [0514/170105.589:ERROR:crash_report_database_win.cc(428)] unexpected header
 [0514/171605.590:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/173105.591:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/174605.593:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/180105.594:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/181605.595:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/183105.597:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/184605.599:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/190105.600:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/191605.620:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/193105.621:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/194607.029:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/200107.030:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/201607.032:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/203107.032:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/204732.817:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/210232.817:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/211732.818:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/213232.818:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/214732.820:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/220232.821:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0514/221420.286:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
+[0514/221420.317:ERROR:exception_snapshot_win.cc(98)] thread ID 18052 not found in process
+[0515/092037.798:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0515/092500.544:ERROR:crash_report_database_win.cc(428)] unexpected header

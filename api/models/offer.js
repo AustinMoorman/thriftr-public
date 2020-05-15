@@ -21,7 +21,8 @@ const offerSchema = mongoose.Schema({
     category: [String],
     merchantId: String,
     startDate: Number,
-    endDate: Number
+    endDate: Number,
+    active: {type: Boolean, default: true}
 })
 
 module.exports = mongoose.model('Offer',offerSchema);

@@ -49,6 +49,7 @@ class Offers extends React.Component {
     return this.props.offerList.map(offer => {
       return (
         <div>
+          <p style={{textAlign: "center"}}>disclosure: the following offers are not legitimate and were created for testing purposes only</p>
           <ImageSlider className="imageSlider" images={offer.images} map={<OfferMap className="offerMap" currentLocation={this.props.currentLocation} offerLocation={offer.location} />} />
 
           <div className="offerBottom">

@@ -113,7 +113,7 @@ searchRouter.post('/get-offers', (req, res, next) => {
             favoritedTags = response.favoritedTags
             favoritedMerchant = response.favoritedMerchant
         }).then(function () {
-            return Offer.find({ category: category, endDate: { $gte: date }, startDate: { $lte: date }, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
+            return Offer.find({ active: true, category: category, endDate: { $gte: date }, startDate: { $lte: date }, location: { $geoWithin: { $centerSphere: [[longitude, latitude], radius / 3963.2] } } }, (err, response) => {
                 if (err) {
                     return next(err)
                 }
